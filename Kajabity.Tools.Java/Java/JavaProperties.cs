@@ -160,7 +160,7 @@ namespace Kajabity.Tools.Java
             {
                 combined = new Hashtable( defaults );
 
-                for( IEnumerator e = this.Keys.GetEnumerator(); e.MoveNext(); )
+                for( IEnumerator e = Keys.GetEnumerator(); e.MoveNext(); )
                 {
                     string key = AsString( e.Current );
                     combined.Add( key, this[ key ] );

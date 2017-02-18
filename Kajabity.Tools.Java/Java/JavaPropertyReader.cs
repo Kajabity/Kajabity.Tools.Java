@@ -480,14 +480,14 @@ namespace Kajabity.Tools.Java
         /// <returns></returns>
         private int ReadCharSafe()
         {
-            if (this.reader.BaseStream.Position == this.reader.BaseStream.Length)
+            if ( reader.BaseStream.Position == reader.BaseStream.Length)
             {
                 // We have reached the end of the stream. The reder will throw exception if we call Read any further.
                 // We just return -1 now;
                 return -1;
             }
             // reader.ReadChar() will take into account the encoding.
-            return this.reader.ReadChar();
+            return reader.ReadChar();
         }
     }
 }

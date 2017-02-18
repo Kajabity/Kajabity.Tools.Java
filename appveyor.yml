@@ -77,9 +77,6 @@ build:
 artifacts:
     - path: Kajabity.Tools.Java\bin\$(configuration)\Kajabity.Tools.Java.dll
 
-      # Being more specific to avoid also identifying NUnit as an artefact.
-      #- path: Kajabity.Tools.Java\bin\$(configuration)\*.nupkg
-
 #---------------------------------# 
 #     deployment configuration    # 
 #---------------------------------# 
