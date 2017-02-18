@@ -29,6 +29,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>Kajabity.Tools.Java.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -43,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Kajabity.Tools.Java.nuspec" />
+    <None Include="Kajabity.Tools.Java.snk" />
     <None Include="license.rtf" />
     <None Include="README.md" />
   </ItemGroup>
