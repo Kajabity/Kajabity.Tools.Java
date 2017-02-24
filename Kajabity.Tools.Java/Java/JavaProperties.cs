@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -32,18 +33,18 @@ namespace Kajabity.Tools.Java
     /// (the characters 0-127 are the same) and forms the first part of the Unicode character set.  Within the
     /// application <see cref="string"/> are Unicode - but all values outside the basic US-ASCII set are escaped.
     /// </summary>
-    public class JavaProperties: Hashtable
+    public class JavaProperties: Dictionary<string, string>
     {
         /// <summary>
         /// Gets a reference to the ISO-8859-1 encoding (code page 28592). This is the Java standard for .properties files.
         /// </summary>
-        internal static Encoding DefaultEncoding { get { return Encoding.GetEncoding( 28592 ); } }
+        internal static Encoding DefaultEncoding { get { return Encoding.GetEncoding( "iso-8859-2" ); } }
 
         /// <summary>
         /// A reference to an optional set of default properties - these values are returned
         /// if the value has not been loaded from a ".properties" file or set programatically.
         /// </summary>
-        protected Hashtable defaults;
+        protected Dictionary<string, string> defaults;
 
         /// <summary>
         /// An empty constructor that doesn't set the defaults.
@@ -58,7 +59,7 @@ namespace Kajabity.Tools.Java
         /// </summary>
         /// <param name="defaults">A Hashtable that holds a set of defafult key value pairs to
         /// return when the requested key has not been set.</param>
-        public JavaProperties( Hashtable defaults )
+        public JavaProperties( Dictionary<string, string> defaults )
         {
             this.defaults = defaults;
         }
@@ -155,10 +156,10 @@ namespace Kajabity.Tools.Java
         /// <returns>An enumarator for all of the keys including defaults.</returns>
         public IEnumerator PropertyNames()
         {
-            Hashtable combined;
+            Dictionary<string, string> combined;
             if( defaults != null )
             {
-                combined = new Hashtable( defaults );
+                combined = new Dictionary<string, string>( defaults );
 
                 for( IEnumerator e = Keys.GetEnumerator(); e.MoveNext(); )
                 {
@@ -168,7 +169,7 @@ namespace Kajabity.Tools.Java
             }
             else
             {
-                combined = new Hashtable( this );
+                combined = new Dictionary<string, string>( this );
             }
 
             return combined.Keys.GetEnumerator();

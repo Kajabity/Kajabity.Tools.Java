@@ -19,9 +19,9 @@
  */
 
 using System.Reflection;
-using System.Runtime.InteropServices;
+using System.Resources;
 
-// General Information about an assembly is controlled through the following
+// General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyProduct( "Kajabity.Tools.Java" )]
@@ -29,23 +29,23 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle( "Kajabity.Tools.Java" )]
 [assembly: AssemblyDescription( "Classes to read and write Java style “.properties” files in .NET applications." )]
 [assembly: AssemblyConfiguration( "" )]
-[assembly: AssemblyCompany( "Kajabity.com" )]
-[assembly: AssemblyCopyright( "Copyright 2009-17 Williams Technologies Limited." )]
+[assembly: AssemblyCompany( "Williams Technologies Limited" )]
+[assembly: AssemblyCopyright( "Copyright © 2009-17 Williams Technologies Limited." )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 
-// Setting ComVisible to false makes the types in this assembly not visible
-// to COM components.  If you need to access a type in this assembly from
-// COM, set the ComVisible attribute to true on that type.
-[assembly: ComVisible( false )]
+[assembly: NeutralResourcesLanguage( "en" )]
 
-// The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid( "8d61655e-77a8-41c9-8050-b7fd59fa689b" )]
-
-// The assembly version has following format :
+// Version information for an assembly consists of the following four values:
 //
-// Major.Minor.Build.Revision
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
 //
-// You can specify all the values or you can use the default the Revision and 
-// Build Numbers by using the '*' as shown below:
+// You can specify all the values or you can default the Build and Revision Numbers 
+// by using the '*' as shown below:
+// [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion( "0.1.*" )]
+[assembly: AssemblyFileVersion( "0.1.0.0" )]
+

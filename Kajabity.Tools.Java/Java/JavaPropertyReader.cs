@@ -19,6 +19,7 @@
  */
 
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -131,9 +132,8 @@ namespace Kajabity.Tools.Java
             }
         };
 
-        private Hashtable hashtable;
-
-        private const int bufferSize =  1000;
+        // Converted to use Dictionary<TKey,TValue> in place of Hashtable when switched to .NET Standard.
+        private Dictionary<string, string> hashtable;
 
         private bool escaped = false;
         private StringBuilder keyBuilder = new StringBuilder();
@@ -144,7 +144,7 @@ namespace Kajabity.Tools.Java
         /// where the keys are to be stored.
         /// </summary>
         /// <param name="hashtable">A reference to a hashtable where the key-value pairs can be stored.</param>
-        public JavaPropertyReader( Hashtable hashtable )
+        public JavaPropertyReader( Dictionary<string, string> hashtable )
         {
             this.hashtable = hashtable;
         }
@@ -299,10 +299,9 @@ namespace Kajabity.Tools.Java
         /// <param name="encoding">The <see cref="System.Text.Encoding">encoding</see> that is used to read the properies file stream.</param>
         public void Parse( Stream stream, Encoding encoding )
         {
-            var bufferedStream = new BufferedStream( stream, bufferSize );
-            // the default encoding ISO-8859-1 (codepabe 28592) will be used if we do not pass explicitly different encoding
+            // The default encoding ISO-8859-1 (codepabe 28592) will be used if we do not pass explicitly different encoding
             var parserEncoding = encoding ?? JavaProperties.DefaultEncoding;
-            reader = new BinaryReader( bufferedStream, parserEncoding );
+            reader = new BinaryReader( stream, parserEncoding );
 
             int state = STATE_start;
             do

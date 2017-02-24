@@ -7,13 +7,12 @@
     <authors>$author$</authors>
     <owners>$author$</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
-    <projectUrl>http://www.kajabity.com/content/kajabity-tools/</projectUrl>
+    <projectUrl>http://kajabity.com/kajabity-tools/java-properties-classes/</projectUrl>
+    <iconUrl>http://kajabity.com/images/logo-57x57.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <copyright>Copyright 2009-17 Williams Technologies Limited.</copyright>
-    <!--
-    <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
-    <tags>Tag1 Tag2</tags>
-    -->
+    <releaseNotes>Converted to use .NET Standard 1.1 for broader compatibility.</releaseNotes>
+    <copyright>Copyright © 2009-17 Williams Technologies Limited.</copyright>
+    <tags>Java Properties</tags>
   </metadata>
 </package>

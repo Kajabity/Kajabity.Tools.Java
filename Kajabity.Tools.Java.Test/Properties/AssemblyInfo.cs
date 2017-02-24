@@ -7,9 +7,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle( "Kajabity.Tools.Java.Test" )]
 [assembly: AssemblyDescription( "Unit tests for Kajabity.Tools.Java classes." )]
 [assembly: AssemblyConfiguration( "" )]
-[assembly: AssemblyCompany( "" )]
+[assembly: AssemblyCompany( "Williams Technologies Limited" )]
 [assembly: AssemblyProduct( "Kajabity.Tools.Java.Test" )]
-[assembly: AssemblyCopyright( "Copyright ©  2017" )]
+[assembly: AssemblyCopyright( "Copyright © 2017 Williams Technologies Limited" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 

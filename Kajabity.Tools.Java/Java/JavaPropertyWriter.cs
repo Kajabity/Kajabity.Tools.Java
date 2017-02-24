@@ -22,6 +22,7 @@ using System;
 using System.IO;
 using System.Collections;
 using System.Text;
+using System.Collections.Generic;
 
 namespace Kajabity.Tools.Java
 {
@@ -55,14 +56,15 @@ namespace Kajabity.Tools.Java
         private const string ESCAPED_CARRIAGE_RETURN = "\\r";
         private const string ESCAPED_UNICODE = "\\u";
 
-        private Hashtable hashtable;
+        // Converted to use Dictionary<TKey,TValue> in place of Hashtable when switched to .NET Standard.
+        private Dictionary<string, string> hashtable;
 
         /// <summary>
         /// Construct an instance of this class.
         /// </summary>
         /// <param name="hashtable">The Hashtable (or JavaProperties) instance
         /// whose values are to be written.</param>
-        public JavaPropertyWriter( Hashtable hashtable )
+        public JavaPropertyWriter( Dictionary<string, string> hashtable )
         {
             this.hashtable = hashtable;
         }
@@ -75,7 +77,7 @@ namespace Kajabity.Tools.Java
         public void Write( Stream stream, string comments )
         {
             //  Create a writer to output to an ISO-8859-1 encoding (code page 28592).
-            StreamWriter writer = new StreamWriter( stream, System.Text.Encoding.GetEncoding( 28592 ) );
+            StreamWriter writer = new StreamWriter( stream, System.Text.Encoding.GetEncoding( "iso-8859-2" ) );
 
             //TODO: Confirm correct codepage:
             //  28592              iso-8859-2                   Central European (ISO)
