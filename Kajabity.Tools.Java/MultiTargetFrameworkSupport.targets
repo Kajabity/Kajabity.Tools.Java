@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <PropertyGroup Condition="'$(TargetFramework)'=='net20'">
+    <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FrameworkShortName>net20</FrameworkShortName>
+    <FrameworkSymbols>net20;NET20_OR_NEWER</FrameworkSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)'=='net30'">
+    <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v3.0</TargetFrameworkVersion>
+    <FrameworkShortName>net30</FrameworkShortName>
+    <FrameworkSymbols>net30;NET20_OR_NEWER;NET30_OR_NEWER</FrameworkSymbols>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(TargetFramework)'=='net35'">
+    <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FrameworkShortName>net35</FrameworkShortName>
+    <FrameworkSymbols>net35;NET20_OR_NEWER;NET30_OR_NEWER;NET35_OR_NEWER</FrameworkSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)'=='net40'">
+    <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FrameworkShortName>net40</FrameworkShortName>
+    <FrameworkSymbols>net35;net40;NET20_OR_NEWER;NET30_OR_NEWER;NET35_OR_NEWER;NET40_OR_NEWER</FrameworkSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)'=='net45'">
+    <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FrameworkShortName>net45</FrameworkShortName>
+    <FrameworkSymbols>net35;net40;net45;NET20_OR_NEWER;NET30_OR_NEWER;NET35_OR_NEWER;NET40_OR_NEWER;NET45_OR_NEWER</FrameworkSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)'=='netstandard1.0'">
+    <TargetFrameworkIdentifier>.NETStandard</TargetFrameworkIdentifier>
+    <FrameworkSymbols>netstandard;NETSTANDARD;NETSTANDARD1_0_OR_NEWER</FrameworkSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)'=='netstandard1.1'">
+    <TargetFrameworkIdentifier>.NETStandard</TargetFrameworkIdentifier>
+    <FrameworkSymbols>netstandard;NETSTANDARD;NETSTANDARD1_0_OR_NEWER;NETSTANDARD1_1_OR_NEWER</FrameworkSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)'=='netstandard1.2'">
+    <TargetFrameworkIdentifier>.NETStandard</TargetFrameworkIdentifier>
+    <FrameworkSymbols>netstandard;NETSTANDARD;NETSTANDARD1_0_OR_NEWER;NETSTANDARD1_1_OR_NEWER;NETSTANDARD1_2_OR_NEWER</FrameworkSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)'=='netstandard1.3'">
+    <TargetFrameworkIdentifier>.NETStandard</TargetFrameworkIdentifier>
+    <FrameworkSymbols>netstandard;NETSTANDARD;NETSTANDARD1_0_OR_NEWER;NETSTANDARD1_1_OR_NEWER;NETSTANDARD1_2_OR_NEWER;NETSTANDARD1_3_OR_NEWER</FrameworkSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)'=='netstandard1.4'">
+    <TargetFrameworkIdentifier>.NETStandard</TargetFrameworkIdentifier>
+    <FrameworkSymbols>netstandard;NETSTANDARD;NETSTANDARD1_0_OR_NEWER;NETSTANDARD1_1_OR_NEWER;NETSTANDARD1_2_OR_NEWER;NETSTANDARD1_3_OR_NEWER;NETSTANDARD1_4_OR_NEWER</FrameworkSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)'=='netstandard1.5'">
+    <TargetFrameworkIdentifier>.NETStandard</TargetFrameworkIdentifier>
+    <FrameworkSymbols>netstandard;NETSTANDARD;NETSTANDARD1_0_OR_NEWER;NETSTANDARD1_1_OR_NEWER;NETSTANDARD1_2_OR_NEWER;NETSTANDARD1_3_OR_NEWER;NETSTANDARD1_4_OR_NEWER;NETSTANDARD1_5_OR_NEWER</FrameworkSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)'=='netstandard1.6'">
+    <TargetFrameworkIdentifier>.NETStandard</TargetFrameworkIdentifier>
+    <FrameworkSymbols>netstandard;NETSTANDARD;NETSTANDARD1_0_OR_NEWER;NETSTANDARD1_1_OR_NEWER;NETSTANDARD1_2_OR_NEWER;NETSTANDARD1_3_OR_NEWER;NETSTANDARD1_4_OR_NEWER;NETSTANDARD1_5_OR_NEWER;NETSTANDARD1_6_OR_NEWER</FrameworkSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
+    <TargetFrameworkIdentifier>.NETStandard</TargetFrameworkIdentifier>
+    <FrameworkSymbols>netstandard;NETSTANDARD;NETSTANDARD1_0_OR_NEWER;NETSTANDARD1_1_OR_NEWER;NETSTANDARD1_2_OR_NEWER;NETSTANDARD1_3_OR_NEWER;NETSTANDARD1_4_OR_NEWER;NETSTANDARD1_5_OR_NEWER;NETSTANDARD1_6_OR_NEWER;NETSTANDARD2_0_OR_NEWER</FrameworkSymbols>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <Compile Remove="packages\**" />
+    <Compile Remove="paket-files\**" />
+    <EmbeddedResource Remove="packages\**" />
+    <EmbeddedResource Remove="paket-files\**" />
+    <None Remove="packages\**" />
+    <None Remove="paket-files\**" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETStandard'">
+    <Compile Remove="Resources\Native\**" />
+    <EmbeddedResource Remove="Resources\Native\**" />
+    <None Remove="Resources\Native\**" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputDirectory>bin\$(Configuration)</OutputDirectory>
+  </PropertyGroup>
+</Project>
