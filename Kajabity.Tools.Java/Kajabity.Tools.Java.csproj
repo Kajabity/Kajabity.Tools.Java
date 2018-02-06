@@ -1,13 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net20;netstandard1.0</TargetFrameworks>
+    <TargetFrameworks>net20;netstandard1.0;netstandard1.1</TargetFrameworks>
   </PropertyGroup>
   <Import Project="MultiTargetFrameworkSupport.targets" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Deterministic>false</Deterministic>
     <ProjectGuid>{4CF13660-95BA-482C-BA3E-BF97B9624F19}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
