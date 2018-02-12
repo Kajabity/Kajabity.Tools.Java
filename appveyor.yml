@@ -21,6 +21,9 @@
 #---------------------------------# 
 #      general configuration      # 
 #---------------------------------# 
+
+# tell appveyor to use MSBuild 15.0 or higher
+image: Visual Studio 2017
  
 # version format 
 version: 0.1-{build}
@@ -57,7 +60,7 @@ nuget:
 
 # build Configuration, i.e. Debug, Release, etc.
 before_build:
-    - cmd: nuget restore "Kajabity.Tools.Java.sln"
+    - cmd: dotnet restore "Kajabity.Tools.Java.sln"
 
 # build Configuration, i.e. Debug, Release, etc.
 configuration: Release

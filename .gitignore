@@ -27,6 +27,7 @@
 *.sln.docstates
 *.DotSettings
 .vs/
+.vscode/
 
 # Build results
 [Dd]ebug/
