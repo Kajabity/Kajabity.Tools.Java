@@ -389,7 +389,7 @@ namespace Kajabity.Tools.Java
                     if (DuplicateKeyResolution == DuplicateKeyResolution.Throw
                         && hashtable.ContainsKey(propToAdd))
                     {
-                        throw new ParseException("Duplicate key.");
+                        throw new ParseException($"Duplicate key: <<<{propToAdd}>>>.");
                     }
                     // Corrected to avoid duplicate entry errors - thanks to David Tanner.
                     hashtable[propToAdd] = valueBuilder.ToString();
