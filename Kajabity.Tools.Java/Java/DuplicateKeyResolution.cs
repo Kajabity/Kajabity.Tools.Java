@@ -33,7 +33,7 @@ namespace Kajabity.Tools.Java
         Overwrite = 1,
 
         /// <summary>
-        /// Throw an excecwption.
+        /// Throw an exception.
         /// </summary>
         Throw = 2
     }
