@@ -138,7 +138,12 @@ namespace Kajabity.Tools.Java
         private bool escaped = false;
         private StringBuilder keyBuilder = new StringBuilder();
         private StringBuilder valueBuilder = new StringBuilder();
-        
+
+        /// <summary>
+        /// Configures the way how duplicate keys will be handled.
+        /// </summary>
+        public DuplicateKeyResolution DuplicateKeyResolution { get; set; } = DuplicateKeyResolution.Overwrite;
+
         /// <summary>
         /// Construct a reader passing a reference to a Hashtable (or JavaProperties) instance
         /// where the keys are to be stored.
@@ -379,8 +384,16 @@ namespace Kajabity.Tools.Java
 
                 case ACTION_store_property:
                     //Debug.WriteLine( keyBuilder.ToString() + "=" + valueBuilder.ToString() );
+
+                    string propToAdd = keyBuilder.ToString();
+                    if (DuplicateKeyResolution == DuplicateKeyResolution.Throw
+                        && hashtable.ContainsKey(propToAdd))
+                    {
+                        throw new ParseException($"Duplicate key: <<<{propToAdd}>>>.");
+                    }
                     // Corrected to avoid duplicate entry errors - thanks to David Tanner.
-                    hashtable[ keyBuilder.ToString() ] = valueBuilder.ToString();
+                    hashtable[propToAdd] = valueBuilder.ToString();
+                    
                     keyBuilder.Length = 0;
                     valueBuilder.Length = 0;
                     escaped = false;
