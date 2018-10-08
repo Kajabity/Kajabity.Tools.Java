@@ -24,6 +24,7 @@ using Kajabity.Tools.Test;
 using NUnit.Framework;
 using System.Reflection;
 using System.Text;
+using System.Linq;
 
 namespace Kajabity.Tools.Java
 {
@@ -40,6 +41,7 @@ namespace Kajabity.Tools.Java
         private string SpecialCharactersTestFile;
         private string NonAciiSymbolsUtf8TestFile;
         private string NonAsciiSymbolsNativeToAsciiTestFile;
+        private string Utf8WithBomFile;
 
         /// <summary>
         /// The directory where a copy of the Java test data input files are placed.
@@ -78,6 +80,7 @@ namespace Kajabity.Tools.Java
             SpecialCharactersTestFile = Path.Combine(JavaTestDataDirectory, "special-characters.properties");
             NonAciiSymbolsUtf8TestFile = Path.Combine(JavaTestDataDirectory, "non-ascii-symbols-utf8.properties");
             NonAsciiSymbolsNativeToAsciiTestFile = Path.Combine(JavaTestDataDirectory, "non-ascii-symbols-native2ascii.properties");
+            Utf8WithBomFile = Path.Combine(JavaTestDataDirectory, "utf8-with-BOM.properties");
         }
 
         [Test]
@@ -367,6 +370,36 @@ namespace Kajabity.Tools.Java
                 fileStream.Close();
 
                 //Assert.IsEmpty(properties);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+            finally
+            {
+                if (fileStream != null)
+                {
+                    fileStream.Close();
+                }
+            }
+        }
+
+        [Test]
+        public void TestUtf8WithBom()
+        {
+            FileStream fileStream = null;
+            try
+            {
+                Console.WriteLine("Loading " + Utf8WithBomFile);
+
+                fileStream = new FileStream(Utf8WithBomFile, FileMode.Open);
+                JavaProperties properties = new JavaProperties();
+
+                properties.Load(fileStream, Encoding.UTF8);
+
+                Assert.AreEqual(
+                    "key",
+                    properties.Keys.Single());
             }
             catch (Exception ex)
             {
