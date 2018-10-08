@@ -470,8 +470,6 @@ namespace Kajabity.Tools.Java
         /// <summary>
         /// A method to substitute calls to <c>stream.ReadByte()</c>.
         /// The <see cref="JavaPropertyReader" /> now uses a <see cref="StreamReader"/> to read properties.
-        /// Unlike a plain stream, the <see cref="BinaryReader"/> will not return -1 when the stream end is reached,
-        /// instead an <see cref="IOException" /> is to be thrown. 
         /// <para>
         /// If the stream is already processed to the end, return <c>-1</c>.
         /// </para>
