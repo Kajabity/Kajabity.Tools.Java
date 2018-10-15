@@ -72,6 +72,11 @@
       <Name>Kajabity.Tools.Java</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Update="Test Data\Java\utf8-with-BOM.properties">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

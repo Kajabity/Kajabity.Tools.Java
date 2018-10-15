@@ -306,7 +306,7 @@ namespace Kajabity.Tools.Java
         {
             // The default encoding ISO-8859-1 (codepabe 28592) will be used if we do not pass explicitly different encoding
             var parserEncoding = encoding ?? JavaProperties.DefaultEncoding;
-            reader = new BinaryReader( stream, parserEncoding );
+            reader = new StreamReader( stream, parserEncoding );
 
             int state = STATE_start;
             do
@@ -453,8 +453,8 @@ namespace Kajabity.Tools.Java
             return (char) ch;
         }
 
-        // we now use a BinaryReader, which supports encodings
-        private BinaryReader reader = null;
+        // we now use a StreamReader, which supports encodings
+        private StreamReader reader = null;
         private int savedChar;
         private bool saved = false;
 
@@ -482,24 +482,16 @@ namespace Kajabity.Tools.Java
 
         /// <summary>
         /// A method to substitute calls to <c>stream.ReadByte()</c>.
-        /// The <see cref="JavaPropertyReader" /> now uses a <see cref="BinaryReader"/> to read properties.
-        /// Unlike a plain stream, the <see cref="BinaryReader"/> will not return -1 when the stream end is reached,
-        /// instead an <see cref="IOException" /> is to be thrown. 
+        /// The <see cref="JavaPropertyReader" /> now uses a <see cref="StreamReader"/> to read properties.
         /// <para>
-        /// In this method we perform a check if the stream is already processed to the end, and return <c>-1</c>.
+        /// If the stream is already processed to the end, return <c>-1</c>.
         /// </para>
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A character code or <c>-1</c> if no more characters are available.</returns>
         private int ReadCharSafe()
         {
-            if ( reader.BaseStream.Position == reader.BaseStream.Length)
-            {
-                // We have reached the end of the stream. The reder will throw exception if we call Read any further.
-                // We just return -1 now;
-                return -1;
-            }
-            // reader.ReadChar() will take into account the encoding.
-            return reader.ReadChar();
+            // reader.Read() will take into account the encoding.
+            return reader.Read();
         }
     }
 }
