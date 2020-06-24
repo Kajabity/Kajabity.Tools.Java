@@ -64,9 +64,19 @@ namespace Kajabity.Tools.Java
         /// </summary>
         /// <param name="hashtable">The Hashtable (or JavaProperties) instance
         /// whose values are to be written.</param>
-        public JavaPropertyWriter( Dictionary<string, string> hashtable )
+        public JavaPropertyWriter(Dictionary<string, string> hashtable)
         {
             this.hashtable = hashtable;
+        }
+
+        /// <summary>
+        /// Write the properties to the output stream with the default encoding.
+        /// </summary>
+        /// <param name="stream">The output stream where the properties are written.</param>
+        /// <param name="comments">Optional comments that are placed at the beginning of the output.</param>
+        public void Write(Stream stream, string comments)
+        {
+            Write(stream, comments);
         }
 
         /// <summary>
@@ -74,29 +84,26 @@ namespace Kajabity.Tools.Java
         /// </summary>
         /// <param name="stream">The output stream where the properties are written.</param>
         /// <param name="comments">Optional comments that are placed at the beginning of the output.</param>
-        public void Write( Stream stream, string comments )
+        /// <param name="encoding">The <see cref="System.Text.Encoding">encoding</see> that is used to write the properies file stream.</param>
+        public void Write(Stream stream, string comments, Encoding encoding)
         {
-            //  Create a writer to output to an ISO-8859-1 encoding (code page 28592).
-            StreamWriter writer = new StreamWriter( stream, System.Text.Encoding.GetEncoding( "iso-8859-2" ) );
+            //  Create a writer to output with the specified encoding.
+            var writerEncoding = encoding ?? JavaProperties.DefaultEncoding;
+            StreamWriter writer = new StreamWriter(stream, encoding);
 
-            //TODO: Confirm correct codepage:
-            //  28592              iso-8859-2                   Central European (ISO)
-            //  28591              iso-8859-1                   Western European (ISO)
-            //  from http://msdn.microsoft.com/en-us/library/system.text.encodinginfo.getencoding.aspx
-
-            if( comments != null )
+            if (comments != null)
             {
-                writer.WriteLine( CHAR_COMMENT_HASH + " " + comments );
+                writer.WriteLine(CHAR_COMMENT_HASH + " " + comments);
             }
 
-            writer.WriteLine( CHAR_COMMENT_HASH + " " + DateTime.Now.ToString() );
+            writer.WriteLine(CHAR_COMMENT_HASH + " " + DateTime.Now.ToString());
 
-            for( IEnumerator e = hashtable.Keys.GetEnumerator(); e.MoveNext(); )
+            for (IEnumerator e = hashtable.Keys.GetEnumerator(); e.MoveNext();)
             {
                 string key = e.Current.ToString();
-                string val = hashtable[ key ].ToString();
+                string val = hashtable[key].ToString();
 
-                writer.WriteLine( escapeKey( key ) + "=" + escapeValue( val ) );
+                writer.WriteLine(escapeKey(key) + "=" + escapeValue(val));
             }
 
             writer.Flush();
@@ -109,54 +116,54 @@ namespace Kajabity.Tools.Java
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
-        private string escapeKey( string s )
+        private string escapeKey(string s)
         {
             StringBuilder buf = new StringBuilder();
             bool first = true;
 
-            foreach( char c in s )
+            foreach (char c in s)
             {
                 //  Avoid confusing with a comment if key starts with '!' (33) or '#' (35).
-                if( first )
+                if (first)
                 {
                     first = false;
-                    if( c == CHAR_COMMENT_PLING || c == CHAR_COMMENT_HASH )
+                    if (c == CHAR_COMMENT_PLING || c == CHAR_COMMENT_HASH)
                     {
-                        buf.Append( CHAR_ESCAPE );
+                        buf.Append(CHAR_ESCAPE);
                     }
                 }
 
-                switch( c )
+                switch (c)
                 {
                     case CHAR_HORIZONTAL_TAB:  //  =09 U+0009  HORIZONTAL TABULATION   \t
-                        buf.Append( ESCAPED_HORIZONTAL_TAB );
+                        buf.Append(ESCAPED_HORIZONTAL_TAB);
                         break;
                     case CHAR_LINE_FEED:  //  =0A U+000A  LINE FEED               \n
-                        buf.Append( ESCAPED_LINE_FEED );
+                        buf.Append(ESCAPED_LINE_FEED);
                         break;
                     case CHAR_FORM_FEED:  //  =0C U+000C  FORM FEED               \f
-                        buf.Append( ESCAPED_FORM_FEED );
+                        buf.Append(ESCAPED_FORM_FEED);
                         break;
                     case CHAR_CARRIAGE_RETURN:  //  =0D U+000D  CARRIAGE RETURN         \r
-                        buf.Append( ESCAPED_CARRIAGE_RETURN );
+                        buf.Append(ESCAPED_CARRIAGE_RETURN);
                         break;
 
                     case ' ':   //  32: ' '
                     case ':':   //  58: ':'
                     case '=':   //  61: '='
                     case CHAR_ESCAPE:  //  92: '\'
-                        buf.Append( CHAR_ESCAPE ).Append( c );
+                        buf.Append(CHAR_ESCAPE).Append(c);
                         break;
 
                     default:
-                        if( c > 31 && c < 127 )
+                        if (c > 31 && c < 127)
                         {
-                            buf.Append( c );
+                            buf.Append(c);
                         }
                         else
                         {
-                            buf.Append( ESCAPED_UNICODE );
-                            buf.Append( ((int) c).ToString( "X4" ) );
+                            buf.Append(ESCAPED_UNICODE);
+                            buf.Append(((int)c).ToString("X4"));
                         }
                         break;
                 }
@@ -165,51 +172,51 @@ namespace Kajabity.Tools.Java
             return buf.ToString();
         }
 
-        private string escapeValue( string s )
+        private string escapeValue(string s)
         {
             StringBuilder buf = new StringBuilder();
             bool first = true;
 
-            foreach( char c in s )
+            foreach (char c in s)
             {
                 //  Handle value starting with whitespace.
-                if( first )
+                if (first)
                 {
                     first = false;
-                    if( c == ' ' || c == CHAR_HORIZONTAL_TAB )
+                    if (c == ' ' || c == CHAR_HORIZONTAL_TAB)
                     {
-                        buf.Append( CHAR_ESCAPE ).Append( c );
+                        buf.Append(CHAR_ESCAPE).Append(c);
                         continue;
                     }
                 }
 
-                switch( c )
+                switch (c)
                 {
                     case CHAR_HORIZONTAL_TAB:  //  =09 U+0009  HORIZONTAL TABULATION   \t
-                        buf.Append( c );  //OK after first position.
+                        buf.Append(c);  //OK after first position.
                         break;
                     case CHAR_LINE_FEED:  //  =0A U+000A  LINE FEED               \n
-                        buf.Append( ESCAPED_LINE_FEED );
+                        buf.Append(ESCAPED_LINE_FEED);
                         break;
                     case CHAR_FORM_FEED:  //  =0C U+000C  FORM FEED               \f
-                        buf.Append( ESCAPED_FORM_FEED );
+                        buf.Append(ESCAPED_FORM_FEED);
                         break;
                     case CHAR_CARRIAGE_RETURN:  //  =0D U+000D  CARRIAGE RETURN         \r
-                        buf.Append( ESCAPED_CARRIAGE_RETURN );
+                        buf.Append(ESCAPED_CARRIAGE_RETURN);
                         break;
                     case CHAR_ESCAPE:  //  92: '\'
-                        buf.Append( CHAR_ESCAPE ).Append( c );
+                        buf.Append(CHAR_ESCAPE).Append(c);
                         break;
 
                     default:
-                        if( c > 31 && c < 127 )
+                        if (c > 31 && c < 127)
                         {
-                            buf.Append( c );
+                            buf.Append(c);
                         }
                         else
                         {
-                            buf.Append( ESCAPED_UNICODE );
-                            buf.Append( ((int) c).ToString( "X4" ) );
+                            buf.Append(ESCAPED_UNICODE);
+                            buf.Append(((int)c).ToString("X4"));
                         }
                         break;
                 }
