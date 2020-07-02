@@ -104,7 +104,7 @@ deploy:
     release: kajabity.tools.csv-v$(appveyor_build_version)
     description: 'Kajabity.Tools.Java Release v$(appveyor_build_version)'
     auth_token:
-        secure: qyEhOXLpH0txl0uO1Y3k99DUnjxsF2bmZydo8h7g05/fyNs+uj/ge+Qg273TsVU1
+        secure: c7cNIShFSFMjEh0bQDEHNdKOGQ67Us4Eobec0A/W4ZieZHkBhGRfj2VOCwPUMHQP
     draft: false
     prerelease: false
     #appveyor_repo_tag: true        # deploy on tag push only
