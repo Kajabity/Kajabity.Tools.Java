@@ -7,7 +7,7 @@
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <AssemblyProduct>$(AssemblyTitle)</AssemblyProduct>
     <AssemblyCompany>Williams Technologies Limited</AssemblyCompany>
-    <Copyright>Copyright © 2009-18 $(AssemblyCompany).</Copyright>
+    <Copyright>Copyright © 2009-20 $(AssemblyCompany).</Copyright>
     <Authors>$(AssemblyCompany)</Authors>
     <Description>Classes to read and write Java style “.properties” files in .NET applications.</Description>
     <!-- Versioning properties -->
@@ -55,10 +55,8 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
-    <None Include="Kajabity.Tools.Java.nuspec" />
     <None Include="Kajabity.Tools.Java.snk" />
     <None Include="license.rtf" />
-    <None Include="project.json" />
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
