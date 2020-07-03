@@ -15,6 +15,11 @@
     <TestProjectType>UnitTest</TestProjectType>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Deterministic>false</Deterministic>
+    <Authors>Williams Technologies Limited</Authors>
+    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <PackageProjectUrl>http://kajabity.com/kajabity-tools/java-properties-classes/</PackageProjectUrl>
+    <PackageIconUrl>http://kajabity.com/images/logo-57x57.png</PackageIconUrl>
+    <PackageTags>Java Properties, Test</PackageTags>
   </PropertyGroup>
   <Import Project="..\Kajabity.Tools.Java\MultiTargetFrameworkSupport.targets" />
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -34,7 +39,6 @@
     <PackageReference Include="NUnit3TestAdapter" Version="3.9.0" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="Test Data\Java\blank.properties">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
