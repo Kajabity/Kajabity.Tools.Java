@@ -76,7 +76,7 @@ namespace Kajabity.Tools.Java
         /// <param name="comments">Optional comments that are placed at the beginning of the output.</param>
         public void Write(Stream stream, string comments)
         {
-            Write(stream, comments);
+            Write(stream, comments, null);
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace Kajabity.Tools.Java
         {
             //  Create a writer to output with the specified encoding.
             var writerEncoding = encoding ?? JavaProperties.DefaultEncoding;
-            StreamWriter writer = new StreamWriter(stream, encoding);
+            StreamWriter writer = new StreamWriter(stream, writerEncoding);
 
             if (comments != null)
             {
