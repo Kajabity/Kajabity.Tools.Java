@@ -26,7 +26,7 @@
 image: Visual Studio 2017
  
 # version format 
-version: 0.1-{build}
+version: 0.2-{build}
 
 # branches to build
 #branches
@@ -92,8 +92,8 @@ deploy:
     # Deploying to NuGet feed
   - provider: NuGet
     api_key:
-        secure: r3ybnECBTOpYHj0EtDF6FMn5V38UX6qrTrf3uRya2v/XlqEp8Qm0z3cK/1+hAQSm
-    skip_symbols: false
+        secure: drPMQzMDYH6xwdC/HBy5T+u38+QnGK1qnOoJBXIDJcIUPo2uiFKlTTuSeNSkCRM5
+    skip_symbols: true
     artifact: /.*\.nupkg/
     on:
         #appveyor_repo_tag: true        # deploy on tag push only - removed or won't deploy at all.
@@ -104,7 +104,7 @@ deploy:
     release: kajabity.tools.csv-v$(appveyor_build_version)
     description: 'Kajabity.Tools.Java Release v$(appveyor_build_version)'
     auth_token:
-        secure: qyEhOXLpH0txl0uO1Y3k99DUnjxsF2bmZydo8h7g05/fyNs+uj/ge+Qg273TsVU1
+        secure: c7cNIShFSFMjEh0bQDEHNdKOGQ67Us4Eobec0A/W4ZieZHkBhGRfj2VOCwPUMHQP
     draft: false
     prerelease: false
     #appveyor_repo_tag: true        # deploy on tag push only

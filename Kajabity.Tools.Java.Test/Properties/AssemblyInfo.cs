@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany( "Williams Technologies Limited" )]
 [assembly: AssemblyProduct( "Kajabity.Tools.Java.Test" )]
-[assembly: AssemblyCopyright( "Copyright © 2017 Williams Technologies Limited" )]
+[assembly: AssemblyCopyright( "Copyright © 2017-20 Williams Technologies Limited" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 
@@ -30,4 +30,4 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion( "0.1.*" )]
+[assembly: AssemblyVersion( "0.2.*" )]
