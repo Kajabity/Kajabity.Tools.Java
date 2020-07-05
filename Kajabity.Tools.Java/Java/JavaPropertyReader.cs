@@ -53,82 +53,82 @@ namespace Kajabity.Tools.Java
         private const int STATE_value_ws = 9;
         private const int STATE_finish = 10;
 
-        private static string [] stateNames = new string[] 
-        { "STATE_start", "STATE_comment", "STATE_key", "STATE_key_escape", "STATE_key_ws", 
-            "STATE_before_separator", "STATE_after_separator", "STATE_value", "STATE_value_escape", 
+        private static string[] stateNames = new string[]
+        { "STATE_start", "STATE_comment", "STATE_key", "STATE_key_escape", "STATE_key_ws",
+            "STATE_before_separator", "STATE_after_separator", "STATE_value", "STATE_value_escape",
             "STATE_value_ws", "STATE_finish" };
-        
-        private static readonly int [][] states = new int[][] {
+
+        private static readonly int[][] states = new int[][] {
             new int[]{//STATE_start
-                MATCH_end_of_input,	STATE_finish,			ACTION_ignore,
-                MATCH_terminator,	STATE_start,			ACTION_ignore,
-                '#',				STATE_comment,			ACTION_ignore,
-                '!',				STATE_comment,			ACTION_ignore,
-                MATCH_whitespace,	STATE_start,			ACTION_ignore,
-                '\\',				STATE_key_escape,		ACTION_escape,
-                ':',				STATE_after_separator,	ACTION_ignore,
-                '=',				STATE_after_separator,	ACTION_ignore,
-                MATCH_any,			STATE_key,				ACTION_add_to_key,
+                MATCH_end_of_input, STATE_finish,           ACTION_ignore,
+                MATCH_terminator,   STATE_start,            ACTION_ignore,
+                '#',                STATE_comment,          ACTION_ignore,
+                '!',                STATE_comment,          ACTION_ignore,
+                MATCH_whitespace,   STATE_start,            ACTION_ignore,
+                '\\',               STATE_key_escape,       ACTION_escape,
+                ':',                STATE_after_separator,  ACTION_ignore,
+                '=',                STATE_after_separator,  ACTION_ignore,
+                MATCH_any,          STATE_key,              ACTION_add_to_key,
             },
             new int[]{//STATE_comment
-                MATCH_end_of_input,	STATE_finish,			ACTION_ignore,
-                MATCH_terminator,	STATE_start,			ACTION_ignore,
-                MATCH_any,			STATE_comment,			ACTION_ignore,
+                MATCH_end_of_input, STATE_finish,           ACTION_ignore,
+                MATCH_terminator,   STATE_start,            ACTION_ignore,
+                MATCH_any,          STATE_comment,          ACTION_ignore,
             },
             new int[]{//STATE_key
-                MATCH_end_of_input,	STATE_finish,			ACTION_store_property,
-                MATCH_terminator,	STATE_start,			ACTION_store_property,
-                MATCH_whitespace,	STATE_before_separator,	ACTION_ignore,
-                '\\',				STATE_key_escape,		ACTION_escape,
-                ':',				STATE_after_separator,	ACTION_ignore,
-                '=',				STATE_after_separator,	ACTION_ignore,
-                MATCH_any,			STATE_key,				ACTION_add_to_key,
+                MATCH_end_of_input, STATE_finish,           ACTION_store_property,
+                MATCH_terminator,   STATE_start,            ACTION_store_property,
+                MATCH_whitespace,   STATE_before_separator, ACTION_ignore,
+                '\\',               STATE_key_escape,       ACTION_escape,
+                ':',                STATE_after_separator,  ACTION_ignore,
+                '=',                STATE_after_separator,  ACTION_ignore,
+                MATCH_any,          STATE_key,              ACTION_add_to_key,
             },
             new int[]{//STATE_key_escape
-                MATCH_terminator,	STATE_key_ws,			ACTION_ignore,
-                MATCH_any,			STATE_key,				ACTION_add_to_key,
+                MATCH_terminator,   STATE_key_ws,           ACTION_ignore,
+                MATCH_any,          STATE_key,              ACTION_add_to_key,
             },
             new int[]{//STATE_key_ws
-                MATCH_end_of_input,	STATE_finish,			ACTION_store_property,
-                MATCH_terminator,	STATE_start,			ACTION_store_property,
-                MATCH_whitespace,	STATE_key_ws,			ACTION_ignore,
-                '\\',				STATE_key_escape,		ACTION_escape,
-                ':',				STATE_after_separator,	ACTION_ignore,
-                '=',				STATE_after_separator,	ACTION_ignore,
-                MATCH_any,			STATE_key,				ACTION_add_to_key,
+                MATCH_end_of_input, STATE_finish,           ACTION_store_property,
+                MATCH_terminator,   STATE_start,            ACTION_store_property,
+                MATCH_whitespace,   STATE_key_ws,           ACTION_ignore,
+                '\\',               STATE_key_escape,       ACTION_escape,
+                ':',                STATE_after_separator,  ACTION_ignore,
+                '=',                STATE_after_separator,  ACTION_ignore,
+                MATCH_any,          STATE_key,              ACTION_add_to_key,
             },
             new int[]{//STATE_before_separator
-                MATCH_end_of_input,	STATE_finish,			ACTION_store_property,
-                MATCH_terminator,	STATE_start,			ACTION_store_property,
-                MATCH_whitespace,	STATE_before_separator,	ACTION_ignore,
-                '\\',				STATE_value_escape,		ACTION_escape,
-                ':',				STATE_after_separator,	ACTION_ignore,
-                '=',				STATE_after_separator,	ACTION_ignore,
-                MATCH_any,			STATE_value,			ACTION_add_to_value,
+                MATCH_end_of_input, STATE_finish,           ACTION_store_property,
+                MATCH_terminator,   STATE_start,            ACTION_store_property,
+                MATCH_whitespace,   STATE_before_separator, ACTION_ignore,
+                '\\',               STATE_value_escape,     ACTION_escape,
+                ':',                STATE_after_separator,  ACTION_ignore,
+                '=',                STATE_after_separator,  ACTION_ignore,
+                MATCH_any,          STATE_value,            ACTION_add_to_value,
             },
             new int[]{//STATE_after_separator
-                MATCH_end_of_input,	STATE_finish,			ACTION_store_property,
-                MATCH_terminator,	STATE_start,			ACTION_store_property,
-                MATCH_whitespace,	STATE_after_separator,	ACTION_ignore,
-                '\\',				STATE_value_escape,		ACTION_escape,
-                MATCH_any,			STATE_value,			ACTION_add_to_value,
+                MATCH_end_of_input, STATE_finish,           ACTION_store_property,
+                MATCH_terminator,   STATE_start,            ACTION_store_property,
+                MATCH_whitespace,   STATE_after_separator,  ACTION_ignore,
+                '\\',               STATE_value_escape,     ACTION_escape,
+                MATCH_any,          STATE_value,            ACTION_add_to_value,
             },
             new int[]{//STATE_value
-                MATCH_end_of_input,	STATE_finish,			ACTION_store_property,
-                MATCH_terminator,	STATE_start,			ACTION_store_property,
-                '\\',				STATE_value_escape,		ACTION_escape,
-                MATCH_any,			STATE_value,			ACTION_add_to_value,
+                MATCH_end_of_input, STATE_finish,           ACTION_store_property,
+                MATCH_terminator,   STATE_start,            ACTION_store_property,
+                '\\',               STATE_value_escape,     ACTION_escape,
+                MATCH_any,          STATE_value,            ACTION_add_to_value,
             },
             new int[]{//STATE_value_escape
-                MATCH_terminator,	STATE_value_ws,			ACTION_ignore,
-                MATCH_any,			STATE_value,			ACTION_add_to_value
+                MATCH_terminator,   STATE_value_ws,         ACTION_ignore,
+                MATCH_any,          STATE_value,            ACTION_add_to_value
             },
             new int[]{//STATE_value_ws
-                MATCH_end_of_input,	STATE_finish,			ACTION_store_property,
-                MATCH_terminator,	STATE_start,			ACTION_store_property,
-                MATCH_whitespace,	STATE_value_ws,			ACTION_ignore,
-                '\\',				STATE_value_escape,		ACTION_escape,
-                MATCH_any,			STATE_value,			ACTION_add_to_value,
+                MATCH_end_of_input, STATE_finish,           ACTION_store_property,
+                MATCH_terminator,   STATE_start,            ACTION_store_property,
+                MATCH_whitespace,   STATE_value_ws,         ACTION_ignore,
+                '\\',               STATE_value_escape,     ACTION_escape,
+                MATCH_any,          STATE_value,            ACTION_add_to_value,
             }
         };
 
@@ -149,13 +149,13 @@ namespace Kajabity.Tools.Java
         /// where the keys are to be stored.
         /// </summary>
         /// <param name="hashtable">A reference to a hashtable where the key-value pairs can be stored.</param>
-        public JavaPropertyReader( Dictionary<string, string> hashtable )
+        public JavaPropertyReader(Dictionary<string, string> hashtable)
         {
             this.hashtable = hashtable;
         }
 
         /// <summary>
-        /// <para>Load key value pairs (properties) from an input Stream expected to have ISO-8859-1 encoding (code page 28592).  
+        /// <para>Load key value pairs (properties) from an input Stream.  
         /// The input stream (usually reading from a ".properties" file) consists of a series of lines (terminated 
         /// by \r, \n or \r\n) each a key value pair, a comment or a blank line.</para>
         /// 
@@ -225,13 +225,13 @@ namespace Kajabity.Tools.Java
         /// <para>An example of a long line split into two.</para>
         /// </summary>
         /// <param name="stream">The input stream that the properties are read from.</param>
-        public void Parse( Stream stream )
+        public void Parse(Stream stream)
         {
-            Parse( stream, null );
+            Parse(stream, null);
         }
 
         /// <summary>
-        /// <para>Load key value pairs (properties) from an input Stream expected to have ISO-8859-1 encoding (code page 28592).  
+        /// <para>Load key value pairs (properties) from an input Stream.  
         /// The input stream (usually reading from a ".properties" file) consists of a series of lines (terminated 
         /// by \r, \n or \r\n) each a key value pair, a comment or a blank line.</para>
         /// 
@@ -302,11 +302,11 @@ namespace Kajabity.Tools.Java
         /// </summary>
         /// <param name="stream">The input stream that the properties are read from.</param>
         /// <param name="encoding">The <see cref="System.Text.Encoding">encoding</see> that is used to read the properies file stream.</param>
-        public void Parse( Stream stream, Encoding encoding )
+        public void Parse(Stream stream, Encoding encoding)
         {
-            // The default encoding ISO-8859-1 (codepabe 28592) will be used if we do not pass explicitly different encoding
+            // The default encoding will be used if we do not pass explicitly different encoding
             var parserEncoding = encoding ?? JavaProperties.DefaultEncoding;
-            reader = new StreamReader( stream, parserEncoding );
+            reader = new StreamReader(stream, parserEncoding);
 
             int state = STATE_start;
             do
@@ -315,43 +315,43 @@ namespace Kajabity.Tools.Java
 
                 bool matched = false;
 
-                for( int s = 0; s < states[ state ].Length; s += 3 )
+                for (int s = 0; s < states[state].Length; s += 3)
                 {
-                    if( matches( states[ state ][ s ], ch ) )
+                    if (matches(states[state][s], ch))
                     {
                         //Debug.WriteLine( stateNames[ state ] + ", " + (s/3) + ", " + ch + (ch>20?" (" + (char) ch + ")" : "") );
                         matched = true;
-                        doAction( states[ state ][ s + 2 ], ch );
+                        doAction(states[state][s + 2], ch);
 
-                        state = states[ state ][ s + 1 ];
+                        state = states[state][s + 1];
                         break;
                     }
                 }
 
-                if( !matched )
+                if (!matched)
                 {
-                    throw new ParseException( "Unexpected character at " + 1 + ": <<<" + ch + ">>>" );
+                    throw new ParseException("Unexpected character at " + 1 + ": <<<" + ch + ">>>");
                 }
-            } while( state != STATE_finish );
+            } while (state != STATE_finish);
         }
 
-        private bool matches( int match, int ch )
+        private bool matches(int match, int ch)
         {
-            switch( match )
+            switch (match)
             {
                 case MATCH_end_of_input:
                     return ch == -1;
 
                 case MATCH_terminator:
-                    if( ch == '\r' )
+                    if (ch == '\r')
                     {
-                        if( peekChar() == '\n')
+                        if (peekChar() == '\n')
                         {
                             saved = false;
                         }
                         return true;
                     }
-                    else if( ch == '\n' )
+                    else if (ch == '\n')
                     {
                         return true;
                     }
@@ -368,17 +368,17 @@ namespace Kajabity.Tools.Java
             }
         }
 
-        private void doAction( int action, int ch )
+        private void doAction(int action, int ch)
         {
-            switch( action )
+            switch (action)
             {
                 case ACTION_add_to_key:
-                    keyBuilder.Append( escapedChar( ch ) );
+                    keyBuilder.Append(escapedChar(ch));
                     escaped = false;
                     break;
 
                 case ACTION_add_to_value:
-                    valueBuilder.Append( escapedChar( ch ) );
+                    valueBuilder.Append(escapedChar(ch));
                     escaped = false;
                     break;
 
@@ -393,7 +393,7 @@ namespace Kajabity.Tools.Java
                     }
                     // Corrected to avoid duplicate entry errors - thanks to David Tanner.
                     hashtable[propToAdd] = valueBuilder.ToString();
-                    
+
                     keyBuilder.Length = 0;
                     valueBuilder.Length = 0;
                     escaped = false;
@@ -403,18 +403,18 @@ namespace Kajabity.Tools.Java
                     escaped = true;
                     break;
 
-                    //case ACTION_ignore:
+                //case ACTION_ignore:
                 default:
                     escaped = false;
                     break;
             }
         }
 
-        private char escapedChar( int ch )
+        private char escapedChar(int ch)
         {
-            if( escaped )
+            if (escaped)
             {
-                switch( ch )
+                switch (ch)
                 {
                     case 't':
                         return '\t';
@@ -426,31 +426,31 @@ namespace Kajabity.Tools.Java
                         return '\f';
                     case 'u':
                         int uch = 0;
-                        for( int i = 0; i < 4; i++ )
+                        for (int i = 0; i < 4; i++)
                         {
                             ch = nextChar();
-                            if( ch >= '0' && ch <='9' )
+                            if (ch >= '0' && ch <= '9')
                             {
                                 uch = (uch << 4) + ch - '0';
                             }
-                            else if( ch >= 'a' && ch <='z' )
+                            else if (ch >= 'a' && ch <= 'z')
                             {
                                 uch = (uch << 4) + ch - 'a' + 10;
                             }
-                            else if( ch >= 'A' && ch <='Z' )
+                            else if (ch >= 'A' && ch <= 'Z')
                             {
                                 uch = (uch << 4) + ch - 'A' + 10;
                             }
                             else
                             {
-                                throw new ParseException( "Invalid Unicode character." );
+                                throw new ParseException("Invalid Unicode character.");
                             }
                         }
-                        return (char) uch;
+                        return (char)uch;
                 }
             }
-            
-            return (char) ch;
+
+            return (char)ch;
         }
 
         // we now use a StreamReader, which supports encodings
@@ -460,7 +460,7 @@ namespace Kajabity.Tools.Java
 
         private int nextChar()
         {
-            if( saved )
+            if (saved)
             {
                 saved = false;
                 return savedChar;
@@ -471,11 +471,11 @@ namespace Kajabity.Tools.Java
 
         private int peekChar()
         {
-            if( saved )
+            if (saved)
             {
                 return savedChar;
             }
-            
+
             saved = true;
             return savedChar = ReadCharSafe();
         }
