@@ -50,6 +50,8 @@ namespace Kajabity.Tools.Java
         private const string TEXT_COMMENT_HASH = "#";
 
         private const string ESCAPED_ESCAPE = "\\\\";
+        private const string ESCAPED_HASH = "\\#";
+        private const string ESCAPED_PLING = "\\!";
         private const string ESCAPED_FORM_FEED = "\\f";
         private const string ESCAPED_HORIZONTAL_TAB = "\\t";
         private const string ESCAPED_LINE_FEED = "\\n";
@@ -103,7 +105,7 @@ namespace Kajabity.Tools.Java
                 string key = e.Current.ToString();
                 string val = hashtable[key].ToString();
 
-                writer.WriteLine(escapeKey(key) + "=" + escapeValue(val));
+                writer.WriteLine(EscapeText(key, true) + "=" + EscapeText(val, false));
             }
 
             writer.Flush();
@@ -115,40 +117,50 @@ namespace Kajabity.Tools.Java
         /// ISO-8859-1 - so all is well.
         /// </summary>
         /// <param name="s"></param>
+        /// <param name="isKey">indicates if this is a key or value which affects space escaping.</param>
         /// <returns></returns>
-        private string escapeKey(string s)
+        private string EscapeText(string s, bool isKey)
         {
             StringBuilder buf = new StringBuilder();
             bool first = true;
-
             foreach (char c in s)
             {
-                //  Avoid confusing with a comment if key starts with '!' (33) or '#' (35).
-                if (first)
-                {
-                    first = false;
-                    if (c == CHAR_COMMENT_PLING || c == CHAR_COMMENT_HASH)
-                    {
-                        buf.Append(CHAR_ESCAPE);
-                    }
-                }
 
                 switch (c)
                 {
+                    //  Avoid confusing with a comment if key starts with '!' (33) or '#' (35).
+                    case CHAR_COMMENT_PLING:
+                        buf.Append( ESCAPED_PLING );
+                        break;
+
+                    case CHAR_COMMENT_HASH:
+                        buf.Append( ESCAPED_HASH );
+                        break;
+
                     case CHAR_HORIZONTAL_TAB:  //  =09 U+0009  HORIZONTAL TABULATION   \t
                         buf.Append(ESCAPED_HORIZONTAL_TAB);
                         break;
+
                     case CHAR_LINE_FEED:  //  =0A U+000A  LINE FEED               \n
                         buf.Append(ESCAPED_LINE_FEED);
                         break;
+
                     case CHAR_FORM_FEED:  //  =0C U+000C  FORM FEED               \f
                         buf.Append(ESCAPED_FORM_FEED);
                         break;
+
                     case CHAR_CARRIAGE_RETURN:  //  =0D U+000D  CARRIAGE RETURN         \r
                         buf.Append(ESCAPED_CARRIAGE_RETURN);
                         break;
 
                     case ' ':   //  32: ' '
+                        if( isKey || first )
+                        {
+                            buf.Append( CHAR_ESCAPE );
+                        }
+                        buf.Append( c );
+                        break;
+
                     case ':':   //  58: ':'
                     case '=':   //  61: '='
                     case CHAR_ESCAPE:  //  92: '\'
@@ -167,59 +179,8 @@ namespace Kajabity.Tools.Java
                         }
                         break;
                 }
-            }
 
-            return buf.ToString();
-        }
-
-        private string escapeValue(string s)
-        {
-            StringBuilder buf = new StringBuilder();
-            bool first = true;
-
-            foreach (char c in s)
-            {
-                //  Handle value starting with whitespace.
-                if (first)
-                {
-                    first = false;
-                    if (c == ' ' || c == CHAR_HORIZONTAL_TAB)
-                    {
-                        buf.Append(CHAR_ESCAPE).Append(c);
-                        continue;
-                    }
-                }
-
-                switch (c)
-                {
-                    case CHAR_HORIZONTAL_TAB:  //  =09 U+0009  HORIZONTAL TABULATION   \t
-                        buf.Append(c);  //OK after first position.
-                        break;
-                    case CHAR_LINE_FEED:  //  =0A U+000A  LINE FEED               \n
-                        buf.Append(ESCAPED_LINE_FEED);
-                        break;
-                    case CHAR_FORM_FEED:  //  =0C U+000C  FORM FEED               \f
-                        buf.Append(ESCAPED_FORM_FEED);
-                        break;
-                    case CHAR_CARRIAGE_RETURN:  //  =0D U+000D  CARRIAGE RETURN         \r
-                        buf.Append(ESCAPED_CARRIAGE_RETURN);
-                        break;
-                    case CHAR_ESCAPE:  //  92: '\'
-                        buf.Append(CHAR_ESCAPE).Append(c);
-                        break;
-
-                    default:
-                        if (c > 31 && c < 127)
-                        {
-                            buf.Append(c);
-                        }
-                        else
-                        {
-                            buf.Append(ESCAPED_UNICODE);
-                            buf.Append(((int)c).ToString("X4"));
-                        }
-                        break;
-                }
+                first = false;
             }
 
             return buf.ToString();

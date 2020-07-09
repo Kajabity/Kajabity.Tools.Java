@@ -36,12 +36,13 @@ namespace Kajabity.Tools.Java
         private string CommentsTestFile;
         private string DuplicateTestFile;
         private string LineBreaksTestFile;
-        private string MixedTestFile;
+        private string UrlsTestFile;
         private string SeparatorsTestFile;
         private string SpecialCharactersTestFile;
         private string NonAciiSymbolsUtf8TestFile;
         private string NonAsciiSymbolsNativeToAsciiTestFile;
         private string Utf8WithBomFile;
+        private string LineBreakWithUnicodeFile;
 
         /// <summary>
         /// The directory where a copy of the Java test data input files are placed.
@@ -75,12 +76,13 @@ namespace Kajabity.Tools.Java
             CommentsTestFile = Path.Combine(JavaTestDataDirectory, "comments.properties");
             DuplicateTestFile = Path.Combine(JavaTestDataDirectory, "duplicate.properties");
             LineBreaksTestFile = Path.Combine(JavaTestDataDirectory, "line-breaks.properties");
-            MixedTestFile = Path.Combine(JavaTestDataDirectory, "mixed.properties");
+            UrlsTestFile = Path.Combine(JavaTestDataDirectory, "urls.properties");
             SeparatorsTestFile = Path.Combine(JavaTestDataDirectory, "separators.properties");
             SpecialCharactersTestFile = Path.Combine(JavaTestDataDirectory, "special-characters.properties");
             NonAciiSymbolsUtf8TestFile = Path.Combine(JavaTestDataDirectory, "non-ascii-symbols-utf8.properties");
             NonAsciiSymbolsNativeToAsciiTestFile = Path.Combine(JavaTestDataDirectory, "non-ascii-symbols-native2ascii.properties");
             Utf8WithBomFile = Path.Combine(JavaTestDataDirectory, "utf8-with-BOM.properties");
+            LineBreakWithUnicodeFile = Path.Combine(JavaTestDataDirectory, "line-break-unicode.properties");
         }
 
         [Test]
@@ -155,7 +157,10 @@ namespace Kajabity.Tools.Java
                 properties.Load(fileStream);
                 fileStream.Close();
 
-                //Assert.Equals( properties.Count, 3 );
+                Assert.AreEqual(properties.Count, 3);
+                Assert.AreEqual(properties["name"], "value");
+                Assert.AreEqual(properties["key\nwith\nnewlines"], "value");
+                Assert.AreEqual(properties["key-no-newlines"], "Value\nwith\nnewlines.");
             }
             catch (Exception ex)
             {
@@ -184,7 +189,7 @@ namespace Kajabity.Tools.Java
                 fileStream.Close();
 
                 Assert.AreEqual(properties.Count, 1);
-                Assert.IsTrue("c".Equals(properties.GetProperty("a")));
+                Assert.AreEqual(properties["a"], "c");
             }
             catch (Exception ex)
             {
@@ -212,7 +217,13 @@ namespace Kajabity.Tools.Java
                 properties.Load(fileStream);
                 fileStream.Close();
 
-                //Assert.Equals( properties.Count, 3 );
+                Assert.AreEqual(properties.Count, 5);
+                Assert.AreEqual(properties["key\nwith\nnewlines"], "value");
+                Assert.AreEqual(properties["key-no-newlines"], "Value\nwith\nnewlines.");
+
+                Assert.AreEqual(properties["fruits"], "apple, banana, pear, cantaloupe, watermelon, kiwi, mango");
+                Assert.AreEqual(properties["fruits2"], "apple, banana, pear, cantaloupe, watermelon, ");
+                Assert.AreEqual(properties["kiwi,"], "mango");
             }
             catch (Exception ex)
             {
@@ -240,7 +251,19 @@ namespace Kajabity.Tools.Java
                 properties.Load(fileStream);
                 fileStream.Close();
 
-                //Assert.IsEmpty(properties);
+                Assert.AreEqual(properties.Count, 8);
+
+                Assert.AreEqual(properties["a"], "b");
+                Assert.AreEqual(properties["c"], "d");
+
+                Assert.AreEqual(properties["e"], "f");
+                Assert.AreEqual(properties["gh"], "ij klm");
+
+                Assert.AreEqual(properties["Truth1"], "Beauty 1");
+                Assert.AreEqual(properties["Truth3"], "Beauty 3");
+                Assert.AreEqual(properties["Truth2"], "Beauty 2");
+
+                Assert.AreEqual(properties["cheeses"], "");
             }
             catch (Exception ex)
             {
@@ -268,7 +291,17 @@ namespace Kajabity.Tools.Java
                 properties.Load(fileStream);
                 fileStream.Close();
 
-                //Assert.IsEmpty(properties);
+                Assert.AreEqual(properties.Count, 7);
+                Assert.AreEqual(properties["key with spaces"], "value with spaces");
+
+                Assert.AreEqual(properties["anotherKey"], "unicode \\u0041='A'");
+                Assert.AreEqual(properties["\u0000\u001FUnicode-Key"], "\u0000\t\n\u001F\u4567Unicode Value");
+
+                Assert.AreEqual(properties["# key-not-comment"], " value begins with\tspace.");
+
+                Assert.AreEqual(properties["One"], "Two = Three Four");
+                Assert.AreEqual(properties["Five Six"], "Seven Eight");
+                Assert.AreEqual(properties["Nine"], "Ten ");
             }
             catch (Exception ex)
             {
@@ -312,7 +345,7 @@ namespace Kajabity.Tools.Java
                 // this is to ensure that setting the encoding makes a difference
                 utf8PropertiesIncorrect.Load(utf8FileStream);
 
-                
+
                 JavaProperties isoProperties = new JavaProperties();
                 isoProperties.Load(isoFileStream);
 
@@ -333,7 +366,7 @@ namespace Kajabity.Tools.Java
                         Assert.AreNotEqual(utf8PropertiesIncorrect[key], utf8PropertiesCorrect[key]);
                         Assert.AreNotEqual(utf8PropertiesIncorrect[key], isoProperties[key]);
                     }
-                    
+
                 }
                 isoFileStream.Close();
 
@@ -357,19 +390,23 @@ namespace Kajabity.Tools.Java
         }
 
         [Test]
-        public void TestMixed()
+        public void TestUrls()
         {
             FileStream fileStream = null;
             try
             {
-                Console.WriteLine("Loading " + MixedTestFile);
+                Console.WriteLine("Loading " + UrlsTestFile);
 
-                fileStream = new FileStream(MixedTestFile, FileMode.Open);
+                fileStream = new FileStream(UrlsTestFile, FileMode.Open);
                 JavaProperties properties = new JavaProperties();
                 properties.Load(fileStream);
                 fileStream.Close();
 
-                //Assert.IsEmpty(properties);
+                Assert.AreEqual(properties.Count, 3);
+
+                Assert.AreEqual(properties["http://www.kajabity.com"], "my lovely web site.");
+                Assert.AreEqual(properties["my-blog"], "http://www.kajabity.com");
+                Assert.AreEqual(properties["my-blog-2"], "{my-blog}");
             }
             catch (Exception ex)
             {
@@ -400,6 +437,33 @@ namespace Kajabity.Tools.Java
                 Assert.AreEqual(
                     "key",
                     properties.Keys.Single());
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+            finally
+            {
+                if (fileStream != null)
+                {
+                    fileStream.Close();
+                }
+            }
+        }
+
+        [Test]
+        public void TestLineBreakInUnicodeSequence()
+        {
+            FileStream fileStream = null;
+            try
+            {
+                // Read the test properties file.
+                Console.WriteLine("Loading " + LineBreakWithUnicodeFile);
+                fileStream = new FileStream(LineBreakWithUnicodeFile, FileMode.Open);
+                JavaProperties properties = new JavaProperties();
+                properties.Load(fileStream);
+
+                Assert.AreEqual(properties["AAAP"], "B");
             }
             catch (Exception ex)
             {
