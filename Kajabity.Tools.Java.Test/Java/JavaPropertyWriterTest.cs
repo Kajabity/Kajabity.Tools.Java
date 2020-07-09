@@ -64,7 +64,7 @@ namespace Kajabity.Tools.Java
     public class JavaPropertyWriterTest : KajabityToolsTest
     {
         [Test]
-        public void JavaPropertyWriter_shouldWriteCommentWithTimestamp()
+        public void JavaPropertyWriter_shouldWriteComment()
         {
             String comment = "a comment";
             JavaProperties properties = new JavaProperties();
@@ -74,21 +74,7 @@ namespace Kajabity.Tools.Java
                 properties.Store(stream, comment);
 
                 string actual = Encoding.GetEncoding("iso-8859-1").GetString(stream.ToArray());
-                Assert.That(actual, Does.Match("# a comment\r\n# \\d{2}/\\d{2}/\\d{4} \\d{2}:\\d{2}:\\d{2}\r\n"));
-            }
-        }
-
-        [Test]
-        public void JavaPropertyWriter_shouldWriteOnlyTimestamp()
-        {
-            JavaProperties properties = new JavaProperties();
-
-            using (var stream = new MemoryStream())
-            {
-                properties.Store(stream, null);
-
-                string actual = Encoding.GetEncoding("iso-8859-1").GetString(stream.ToArray());
-                Assert.That(actual, Does.Match("# \\d{2}/\\d{2}/\\d{4} \\d{2}:\\d{2}:\\d{2}\r\n"));
+                Assert.That( actual, Does.Contain( comment ) );
             }
         }
 
