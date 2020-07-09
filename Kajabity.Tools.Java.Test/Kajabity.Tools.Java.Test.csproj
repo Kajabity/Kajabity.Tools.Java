@@ -54,9 +54,6 @@
     <None Include="Test Data\Java\line-breaks.properties">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Test Data\Java\mixed.properties">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="Test Data\Java\non-ascii-symbols-native2ascii.properties">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -77,6 +74,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Update="Test Data\Java\line-break-unicode.properties">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Test Data\Java\urls.properties">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Test Data\Java\utf8-with-BOM.properties">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

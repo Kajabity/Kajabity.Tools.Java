@@ -18,7 +18,6 @@
  * http://www.kajabity.com
  */
 
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -343,19 +342,7 @@ namespace Kajabity.Tools.Java
                     return ch == -1;
 
                 case MATCH_terminator:
-                    if (ch == '\r')
-                    {
-                        if (peekChar() == '\n')
-                        {
-                            saved = false;
-                        }
-                        return true;
-                    }
-                    else if (ch == '\n')
-                    {
-                        return true;
-                    }
-                    return false;
+                    return isTerminator(ch);
 
                 case MATCH_whitespace:
                     return ch == ' ' || ch == '\t' || ch == '\f';
@@ -426,31 +413,59 @@ namespace Kajabity.Tools.Java
                         return '\f';
                     case 'u':
                         int uch = 0;
-                        for (int i = 0; i < 4; i++)
+                        int i = 0;
+                        do
                         {
                             ch = nextChar();
-                            if (ch >= '0' && ch <= '9')
+                            if (ch == '\\' && isTerminator(nextChar()))
+                            {
+                                // Skip past it.
+                            }
+                            else if (ch >= '0' && ch <= '9')
                             {
                                 uch = (uch << 4) + ch - '0';
+                                i++;
                             }
                             else if (ch >= 'a' && ch <= 'z')
                             {
                                 uch = (uch << 4) + ch - 'a' + 10;
+                                i++;
                             }
                             else if (ch >= 'A' && ch <= 'Z')
                             {
                                 uch = (uch << 4) + ch - 'A' + 10;
+                                i++;
                             }
                             else
                             {
                                 throw new ParseException("Invalid Unicode character.");
                             }
                         }
+                        while (i < 4);
+
                         return (char)uch;
                 }
             }
 
             return (char)ch;
+        }
+
+        private bool isTerminator(int ch)
+        {
+            if (ch == '\r')
+            {
+                if (peekChar() == '\n')
+                {
+                    saved = false;
+                }
+                return true;
+            }
+            else if (ch == '\n')
+            {
+                return true;
+            }
+
+            return false;
         }
 
         // we now use a StreamReader, which supports encodings
