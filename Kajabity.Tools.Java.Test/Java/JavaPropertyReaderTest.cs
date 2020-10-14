@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2009-17 Williams Technologies Limited.
+ * Copyright 2009-20 Williams Technologies Limited.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Kajbity is a trademark of Williams Technologies Limited.
+ * Kajabity is a trademark of Williams Technologies Limited.
  *
  * http://www.kajabity.com
  */
 
 using System;
 using System.IO;
-using Kajabity.Tools.Test;
 using NUnit.Framework;
 using System.Reflection;
 using System.Text;
@@ -29,7 +28,7 @@ using System.Linq;
 namespace Kajabity.Tools.Java
 {
     [TestFixture]
-    public class JavaPropertyReaderTest : KajabityToolsTest
+    public class JavaPropertyReaderTest
     {
         private string EmptyTestFile;
         private string BlankTestFile;
@@ -39,7 +38,7 @@ namespace Kajabity.Tools.Java
         private string UrlsTestFile;
         private string SeparatorsTestFile;
         private string SpecialCharactersTestFile;
-        private string NonAciiSymbolsUtf8TestFile;
+        private string NonAsciiSymbolsUtf8TestFile;
         private string NonAsciiSymbolsNativeToAsciiTestFile;
         private string Utf8WithBomFile;
         private string LineBreakWithUnicodeFile;
@@ -79,7 +78,7 @@ namespace Kajabity.Tools.Java
             UrlsTestFile = Path.Combine(JavaTestDataDirectory, "urls.properties");
             SeparatorsTestFile = Path.Combine(JavaTestDataDirectory, "separators.properties");
             SpecialCharactersTestFile = Path.Combine(JavaTestDataDirectory, "special-characters.properties");
-            NonAciiSymbolsUtf8TestFile = Path.Combine(JavaTestDataDirectory, "non-ascii-symbols-utf8.properties");
+            NonAsciiSymbolsUtf8TestFile = Path.Combine(JavaTestDataDirectory, "non-ascii-symbols-utf8.properties");
             NonAsciiSymbolsNativeToAsciiTestFile = Path.Combine(JavaTestDataDirectory, "non-ascii-symbols-native2ascii.properties");
             Utf8WithBomFile = Path.Combine(JavaTestDataDirectory, "utf8-with-BOM.properties");
             LineBreakWithUnicodeFile = Path.Combine(JavaTestDataDirectory, "line-break-unicode.properties");
@@ -323,10 +322,10 @@ namespace Kajabity.Tools.Java
             FileStream isoFileStream = null;
             try
             {
-                Console.WriteLine("Loading " + NonAciiSymbolsUtf8TestFile);
+                Console.WriteLine("Loading " + NonAsciiSymbolsUtf8TestFile);
 
                 // A file containing non-ASCII characters, which is saved using the utf8 encoding
-                utf8FileStream = new FileStream(NonAciiSymbolsUtf8TestFile, FileMode.Open);
+                utf8FileStream = new FileStream(NonAsciiSymbolsUtf8TestFile, FileMode.Open);
 
                 Console.WriteLine("Loading " + NonAsciiSymbolsNativeToAsciiTestFile);
 
