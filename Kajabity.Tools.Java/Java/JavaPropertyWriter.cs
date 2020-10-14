@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-17 Williams Technologies Limited.
+ * Copyright 2009-20 Williams Technologies Limited.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Kajbity is a trademark of Williams Technologies Limited.
+ * Kajabity is a trademark of Williams Technologies Limited.
  *
  * http://www.kajabity.com
  */
 
 using System;
-using System.IO;
 using System.Collections;
-using System.Text;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
 namespace Kajabity.Tools.Java
 {
@@ -57,6 +57,21 @@ namespace Kajabity.Tools.Java
         private const string ESCAPED_LINE_FEED = "\\n";
         private const string ESCAPED_CARRIAGE_RETURN = "\\r";
         private const string ESCAPED_UNICODE = "\\u";
+
+        /// <summary>
+        /// Whether or not to output the creation timestamp as a comment at the top of the CSV file.
+        /// </summary>
+        private bool outputTimestamp = true;
+
+        /// <summary>
+        /// Gets or sets a flag indicating if the creation timestamp should be added as a comment at the top of the CSV file - default is true.
+        /// </summary>
+        public bool OutputTimestamp
+        {
+            get => outputTimestamp;
+            set => outputTimestamp = value;
+        }
+
 
         // Converted to use Dictionary<TKey,TValue> in place of Hashtable when switched to .NET Standard.
         private Dictionary<string, string> hashtable;
@@ -98,7 +113,10 @@ namespace Kajabity.Tools.Java
                 writer.WriteLine(CHAR_COMMENT_HASH + " " + comments);
             }
 
-            writer.WriteLine(CHAR_COMMENT_HASH + " " + DateTime.Now.ToString());
+            if (outputTimestamp)
+            {
+                writer.WriteLine(CHAR_COMMENT_HASH + " " + DateTime.Now.ToString());
+            }
 
             for (IEnumerator e = hashtable.Keys.GetEnumerator(); e.MoveNext();)
             {
@@ -130,11 +148,11 @@ namespace Kajabity.Tools.Java
                 {
                     //  Avoid confusing with a comment if key starts with '!' (33) or '#' (35).
                     case CHAR_COMMENT_PLING:
-                        buf.Append( ESCAPED_PLING );
+                        buf.Append(ESCAPED_PLING);
                         break;
 
                     case CHAR_COMMENT_HASH:
-                        buf.Append( ESCAPED_HASH );
+                        buf.Append(ESCAPED_HASH);
                         break;
 
                     case CHAR_HORIZONTAL_TAB:  //  =09 U+0009  HORIZONTAL TABULATION   \t
@@ -154,11 +172,11 @@ namespace Kajabity.Tools.Java
                         break;
 
                     case ' ':   //  32: ' '
-                        if( isKey || first )
+                        if (isKey || first)
                         {
-                            buf.Append( CHAR_ESCAPE );
+                            buf.Append(CHAR_ESCAPE);
                         }
-                        buf.Append( c );
+                        buf.Append(c);
                         break;
 
                     case ':':   //  58: ':'

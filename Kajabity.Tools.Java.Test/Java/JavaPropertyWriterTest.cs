@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2009-17 Williams Technologies Limited.
+ * Copyright 2009-20 Williams Technologies Limited.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Kajbity is a trademark of Williams Technologies Limited.
+ * Kajabity is a trademark of Williams Technologies Limited.
  *
  * http://www.kajabity.com
  */
@@ -21,7 +21,6 @@
 using System;
 using System.IO;
 using System.Text;
-using Kajabity.Tools.Test;
 using NUnit.Framework;
 
 namespace Kajabity.Tools.Java
@@ -61,7 +60,7 @@ namespace Kajabity.Tools.Java
     /// </pre>
     /// </summary>
     [TestFixture]
-    public class JavaPropertyWriterTest : KajabityToolsTest
+    public class JavaPropertyWriterTest
     {
         [Test]
         public void JavaPropertyWriter_shouldWriteComment()
@@ -75,6 +74,34 @@ namespace Kajabity.Tools.Java
 
                 string actual = Encoding.GetEncoding("iso-8859-1").GetString(stream.ToArray());
                 Assert.That( actual, Does.Contain( comment ) );
+            }
+        }
+
+        [Test]
+        public void JavaPropertyWriter_shouldWriteTimestampIfTrue()
+        {
+            JavaProperties properties = new JavaProperties();
+
+            using (var stream = new MemoryStream())
+            {
+                properties.Store(stream, true);
+
+                string actual = Encoding.GetEncoding("iso-8859-1").GetString(stream.ToArray());
+                Assert.That(actual, Does.StartWith("#"));
+            }
+        }
+
+        [Test]
+        public void JavaPropertyWriter_shouldNotWriteTimestampIfFalse()
+        {
+            JavaProperties properties = new JavaProperties();
+
+            using (var stream = new MemoryStream())
+            {
+                properties.Store(stream, false);
+
+                string actual = Encoding.GetEncoding("iso-8859-1").GetString(stream.ToArray());
+                Assert.IsEmpty(actual);
             }
         }
 

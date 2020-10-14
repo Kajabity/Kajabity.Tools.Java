@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-17 Williams Technologies Limited.
+ * Copyright 2009-20 Williams Technologies Limited.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Kajbity is a trademark of Williams Technologies Limited.
+ * Kajabity is a trademark of Williams Technologies Limited.
  *
  * http://www.kajabity.com
  */
@@ -38,7 +38,7 @@ namespace Kajabity.Tools.Java
         /// <summary>
         /// Gets a reference to the ISO-8859-1 encoding (code page 28591). This is the Java standard for .properties files.
         /// </summary>
-        internal static Encoding DefaultEncoding { get { return Encoding.GetEncoding("iso-8859-1"); } }
+        internal static Encoding DefaultEncoding => Encoding.GetEncoding("iso-8859-1");
 
         //TODO: Confirm correct codepage:
         //  28591              iso-8859-1                   Western European (ISO)
@@ -49,7 +49,7 @@ namespace Kajabity.Tools.Java
         /// A reference to an optional set of default properties - these values are returned
         /// if the value has not been loaded from a ".properties" file or set programatically.
         /// </summary>
-        protected Dictionary<string, string> defaults;
+        protected Dictionary<string, string> Defaults;
 
         /// <summary>
         /// An empty constructor that doesn't set the defaults.
@@ -66,7 +66,7 @@ namespace Kajabity.Tools.Java
         /// return when the requested key has not been set.</param>
         public JavaProperties(Dictionary<string, string> defaults)
         {
-            this.defaults = defaults;
+            this.Defaults = defaults;
         }
 
         /// <summary>
@@ -100,11 +100,45 @@ namespace Kajabity.Tools.Java
         /// date - and an additional comment may be included.
         /// </summary>
         /// <param name="streamOut">An output stream to write the properties to.</param>
-        /// <param name="comments">Optional additional comment to include at the head of the output.</param>
+        /// <param name="comments">Optional additional comment to include at the head of the output (null to omit).</param>
         public void Store(Stream streamOut, string comments)
         {
             JavaPropertyWriter writer = new JavaPropertyWriter(this);
             writer.Write(streamOut, comments);
+        }
+
+        /// <summary>
+        /// Store the contents of this collection of properties to the stream in the format
+        /// used for Java ".properties" files using an instance of <see cref="JavaPropertyWriter"/>.
+        /// The keys and values will be minimally escaped to ensure special characters are read back
+        /// in properly.  Keys are not sorted.  The file may begin with a comment identifying the
+        /// date.
+        /// </summary>
+        /// <param name="streamOut">An output stream to write the properties to.</param>
+        /// <param name="outputTimestamp">Indicate that a comment with a timestamp should be output (true) or not (false).</param>
+        public void Store(Stream streamOut, bool outputTimestamp)
+        {
+            JavaPropertyWriter writer = new JavaPropertyWriter(this);
+            writer.OutputTimestamp = outputTimestamp;
+            writer.Write(streamOut, null);
+        }
+
+        /// <summary>
+        /// Store the contents of this collection of properties to the stream in the format
+        /// used for Java ".properties" files using an instance of <see cref="JavaPropertyWriter"/>.
+        /// The keys and values will be minimally escaped to ensure special characters are read back
+        /// in properly.  Keys are not sorted.  The file may begin with a comment identifying the
+        /// date - and an additional comment may be included.
+        /// </summary>
+        /// <param name="streamOut">An output stream to write the properties to.</param>
+        /// <param name="comments">Optional additional comment to include at the head of the output.</param>
+        /// <param name="encoding">The <see cref="System.Text.Encoding">encoding</see> that is used to write the properies file stream.</param>
+        /// <param name="outputTimestamp">Indicate that a comment with a timestamp should be output (true) or not (false).</param>
+        public void Store(Stream streamOut, string comments, Encoding encoding, bool outputTimestamp)
+        {
+            JavaPropertyWriter writer = new JavaPropertyWriter(this);
+            writer.OutputTimestamp = outputTimestamp;
+            writer.Write(streamOut, comments, encoding);
         }
 
         /// <summary>
@@ -120,9 +154,9 @@ namespace Kajabity.Tools.Java
             {
                 return AsString(objectValue);
             }
-            else if (defaults != null)
+            else if (Defaults != null)
             {
-                return AsString(defaults[key]);
+                return AsString(Defaults[key]);
             }
 
             return null;
@@ -138,7 +172,7 @@ namespace Kajabity.Tools.Java
         public string GetProperty(string key, string defaultValue)
         {
             string val = GetProperty(key);
-            return (val == null) ? defaultValue : val;
+            return val ?? defaultValue;
         }
 
         /// <summary>
@@ -162,9 +196,9 @@ namespace Kajabity.Tools.Java
         public IEnumerator PropertyNames()
         {
             Dictionary<string, string> combined;
-            if (defaults != null)
+            if (Defaults != null)
             {
-                combined = new Dictionary<string, string>(defaults);
+                combined = new Dictionary<string, string>(Defaults);
 
                 for (IEnumerator e = Keys.GetEnumerator(); e.MoveNext();)
                 {
