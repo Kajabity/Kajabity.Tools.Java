@@ -24,6 +24,7 @@ using NUnit.Framework;
 using System.Reflection;
 using System.Text;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Kajabity.Tools.Java
 {
@@ -463,6 +464,42 @@ namespace Kajabity.Tools.Java
                 properties.Load(fileStream);
 
                 Assert.AreEqual(properties["AAAP"], "B");
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+            finally
+            {
+                if (fileStream != null)
+                {
+                    fileStream.Close();
+                }
+            }
+        }
+
+
+        [Test]
+        public void TestMissingProperty()
+        {
+            FileStream fileStream = null;
+            try
+            {
+                Console.WriteLine("Loading " + EmptyTestFile);
+
+                var defaults = new Dictionary<string, string>
+                {
+                    { "test", "value" }
+                };
+
+                fileStream = new FileStream(EmptyTestFile, FileMode.Open);
+                JavaProperties properties = new JavaProperties(defaults);
+                properties.Load(fileStream);
+                fileStream.Close();
+
+                Assert.IsEmpty(properties);
+                Assert.IsNull(properties.GetProperty("NonExistant"));
+                Assert.AreEqual(defaults["test"], properties.GetProperty("test"));
             }
             catch (Exception ex)
             {
