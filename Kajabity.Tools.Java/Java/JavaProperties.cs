@@ -149,16 +149,15 @@ namespace Kajabity.Tools.Java
         /// <returns>The value corresponding to the key - or null if not found.</returns>
         public string GetProperty(string key)
         {
-            Object objectValue = this[key];
-            if (objectValue != null)
+            string value = null;
+            if (TryGetValue(key, out value))
             {
-                return AsString(objectValue);
+                return value;
             }
-            else if (Defaults != null)
+            else if (Defaults != null && Defaults.TryGetValue(key, out value))
             {
-                return AsString(Defaults[key]);
+                return value;
             }
-
             return null;
         }
 
