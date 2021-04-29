@@ -500,6 +500,8 @@ namespace Kajabity.Tools.Java
                 Assert.IsEmpty(properties);
                 Assert.IsNull(properties.GetProperty("NonExistent"));
                 Assert.AreEqual(defaults["test"], properties.GetProperty("test"));
+
+                Assert.IsNull(properties.SetProperty("NonExistent", "a new value"));
             }
             catch (Exception ex)
             {

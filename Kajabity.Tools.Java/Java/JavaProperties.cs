@@ -182,7 +182,7 @@ namespace Kajabity.Tools.Java
         /// <returns>The original value of the key - as a string.</returns>
         public string SetProperty(string key, string newValue)
         {
-            string oldValue = AsString(this[key]);
+            string oldValue = GetProperty(key);
             this[key] = newValue;
             return oldValue;
         }
