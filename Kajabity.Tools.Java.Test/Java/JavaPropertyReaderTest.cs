@@ -498,7 +498,7 @@ namespace Kajabity.Tools.Java
                 fileStream.Close();
 
                 Assert.IsEmpty(properties);
-                Assert.IsNull(properties.GetProperty("NonExistant"));
+                Assert.IsNull(properties.GetProperty("NonExistent"));
                 Assert.AreEqual(defaults["test"], properties.GetProperty("test"));
 
                 Assert.IsNull(properties.SetProperty("NonExistant", "a new value"));
