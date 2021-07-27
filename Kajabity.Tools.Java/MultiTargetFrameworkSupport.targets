@@ -38,6 +38,13 @@
     <FrameworkSymbols>NET20_OR_NEWER;NET30_OR_NEWER;NET35_OR_NEWER;NET40_OR_NEWER;NET45_OR_NEWER</FrameworkSymbols>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(TargetFramework)'=='net50'">
+    <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <FrameworkShortName>net50</FrameworkShortName>
+    <FrameworkSymbols>NET20_OR_NEWER;NET30_OR_NEWER;NET35_OR_NEWER;NET40_OR_NEWER;NET45_OR_NEWER;NET50_OR_NEWER</FrameworkSymbols>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(TargetFramework)'=='netstandard1.0'">
     <TargetFrameworkIdentifier>.NETStandard</TargetFrameworkIdentifier>
     <FrameworkSymbols>NETSTANDARD;NETSTANDARD1_0_OR_NEWER</FrameworkSymbols>
