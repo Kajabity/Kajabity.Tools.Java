@@ -29,6 +29,9 @@
 .vs/
 .vscode/
 
+# Just sometimes...
+.idea/
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/

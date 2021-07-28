@@ -1,15 +1,16 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard1.1;netstandard1.0;net40;net20</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;netstandard1.1;netstandard1.0;net5.0;net40;net20</TargetFrameworks>
     <!-- Assembly info properties -->
     <AssemblyName>Kajabity.Tools.Java</AssemblyName>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <AssemblyProduct>$(AssemblyTitle)</AssemblyProduct>
     <AssemblyCompany>Williams Technologies Limited</AssemblyCompany>
-    <Copyright>Copyright © 2009-20 $(AssemblyCompany).</Copyright>
+    <Copyright>Copyright © 2009-21 $(AssemblyCompany).</Copyright>
     <Authors>$(AssemblyCompany)</Authors>
     <Description>Classes to read and write Java style “.properties” files in .NET applications.</Description>
+
     <!-- Versioning properties -->
     <Build>$([System.DateTime]::op_Subtraction($([System.DateTime]::get_Now().get_Date()),$([System.DateTime]::new(2000,1,1))).get_TotalDays())</Build>
     <Revision>$([MSBuild]::Divide($([System.DateTime]::get_Now().get_TimeOfDay().get_TotalSeconds()), 2).ToString('F0'))</Revision>
@@ -17,6 +18,7 @@
     <AssemblyVersion>$(Version)</AssemblyVersion>
     <AssemblyFileVersion>$(Version)</AssemblyFileVersion>
     <AssemblyInformationalVersion>$(Version)</AssemblyInformationalVersion>
+
     <!-- nuget package properties -->
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <PackageProjectUrl>http://kajabity.com/kajabity-tools/java-properties-classes/</PackageProjectUrl>
@@ -24,8 +26,11 @@
     <PackageIconUrl>$(PackageIconUri)</PackageIconUrl><!-- This will be deprecated in favour of the above tag -->
     <PackageTags>Java Properties</PackageTags>
     <PackageVersion>$(Version)</PackageVersion>
+    <RepositoryUrl>https://github.com/Kajabity/Kajabity.Tools.Java</RepositoryUrl>
   </PropertyGroup>
+
   <Import Project="MultiTargetFrameworkSupport.targets" />
+
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -38,31 +43,22 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <DocumentationFile>$(OutputPath)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
+
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <DefineConstants>DEBUG;TRACE;$(FrameworkSymbols)</DefineConstants>
   </PropertyGroup>
+
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <DefineConstants>TRACE;$(FrameworkSymbols)</DefineConstants>
   </PropertyGroup>
+
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Kajabity.Tools.Java.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
-  <ItemGroup>
-    <!-- A reference to the entire .NET Framework is automatically included -->
-    <None Include="Kajabity.Tools.Java.snk" />
-    <None Include="license.rtf" />
-    <None Include="README.md" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="NOTICE.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Java" />
-  </ItemGroup>
 </Project>
