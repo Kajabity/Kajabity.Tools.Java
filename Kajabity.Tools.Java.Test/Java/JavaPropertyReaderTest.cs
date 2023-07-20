@@ -57,10 +57,10 @@ namespace Kajabity.Tools.Java
         [OneTimeSetUp]
         public void SetUp()
         {
-            Assembly assem = Assembly.GetExecutingAssembly();
-            string assemblyPath = Directory.GetParent(assem.Location).FullName;
-            string testDataDirectory = Path.Combine(assemblyPath, "Test Data");
-            string outputDirectory = Path.Combine(assemblyPath, "Output");
+            var assem = Assembly.GetExecutingAssembly();
+            var assemblyPath = Directory.GetParent(assem.Location).FullName;
+            var testDataDirectory = Path.Combine(assemblyPath, "Test Data");
+            var outputDirectory = Path.Combine(assemblyPath, "Output");
 
             JavaTestDataDirectory = Path.Combine(testDataDirectory, "Java");
             JavaOutputDirectory = Path.Combine(outputDirectory, "Java");
@@ -88,28 +88,19 @@ namespace Kajabity.Tools.Java
         [Test]
         public void TestEmptyFile()
         {
-            FileStream fileStream = null;
             try
             {
                 Console.WriteLine("Loading " + EmptyTestFile);
 
-                fileStream = new FileStream(EmptyTestFile, FileMode.Open);
-                JavaProperties properties = new JavaProperties();
+                using var fileStream = new FileStream(EmptyTestFile, FileMode.Open);
+                var properties = new JavaProperties();
                 properties.Load(fileStream);
-                fileStream.Close();
 
                 Assert.IsEmpty(properties);
             }
             catch (Exception ex)
             {
                 Assert.Fail(ex.Message);
-            }
-            finally
-            {
-                if (fileStream != null)
-                {
-                    fileStream.Close();
-                }
             }
         }
 
@@ -119,15 +110,13 @@ namespace Kajabity.Tools.Java
         [Test]
         public void TestBlankFile()
         {
-            FileStream fileStream = null;
             try
             {
                 Console.WriteLine("Loading " + BlankTestFile);
 
-                fileStream = new FileStream(BlankTestFile, FileMode.Open);
-                JavaProperties properties = new JavaProperties();
+                using var fileStream = new FileStream(BlankTestFile, FileMode.Open);
+                var properties = new JavaProperties();
                 properties.Load(fileStream);
-                fileStream.Close();
 
                 Assert.IsEmpty(properties);
             }
@@ -135,223 +124,169 @@ namespace Kajabity.Tools.Java
             {
                 Assert.Fail(ex.Message);
             }
-            finally
-            {
-                if (fileStream != null)
-                {
-                    fileStream.Close();
-                }
-            }
         }
 
         [Test]
         public void TestComments()
         {
-            FileStream fileStream = null;
             try
             {
                 Console.WriteLine("Loading " + CommentsTestFile);
 
-                fileStream = new FileStream(CommentsTestFile, FileMode.Open);
-                JavaProperties properties = new JavaProperties();
+                using var fileStream = new FileStream(CommentsTestFile, FileMode.Open);
+                var properties = new JavaProperties();
                 properties.Load(fileStream);
-                fileStream.Close();
 
-                Assert.AreEqual(properties.Count, 3);
-                Assert.AreEqual(properties["name"], "value");
-                Assert.AreEqual(properties["key\nwith\nnewlines"], "value");
-                Assert.AreEqual(properties["key-no-newlines"], "Value\nwith\nnewlines.");
+                Assert.AreEqual(3, properties.Count);
+                Assert.AreEqual("value", properties["name"]);
+                Assert.AreEqual("value", properties["key\nwith\nnewlines"]);
+                Assert.AreEqual("Value\nwith\nnewlines.", properties["key-no-newlines"]);
             }
             catch (Exception ex)
             {
                 Assert.Fail(ex.Message);
-            }
-            finally
-            {
-                if (fileStream != null)
-                {
-                    fileStream.Close();
-                }
             }
         }
 
         [Test]
         public void TestDuplicates()
         {
-            FileStream fileStream = null;
             try
             {
                 Console.WriteLine("Loading " + DuplicateTestFile);
 
-                fileStream = new FileStream(DuplicateTestFile, FileMode.Open);
-                JavaProperties properties = new JavaProperties();
+                var fileStream = new FileStream(DuplicateTestFile, FileMode.Open);
+                var properties = new JavaProperties();
                 properties.Load(fileStream);
-                fileStream.Close();
 
-                Assert.AreEqual(properties.Count, 1);
-                Assert.AreEqual(properties["a"], "c");
+                Assert.AreEqual(1, properties.Count);
+                Assert.AreEqual("c", properties["a"]);
             }
             catch (Exception ex)
             {
                 Assert.Fail(ex.Message);
-            }
-            finally
-            {
-                if (fileStream != null)
-                {
-                    fileStream.Close();
-                }
             }
         }
 
         [Test]
         public void TestLineBreaks()
         {
-            FileStream fileStream = null;
             try
             {
                 Console.WriteLine("Loading " + LineBreaksTestFile);
 
-                fileStream = new FileStream(LineBreaksTestFile, FileMode.Open);
-                JavaProperties properties = new JavaProperties();
+                using var fileStream = new FileStream(LineBreaksTestFile, FileMode.Open);
+                var properties = new JavaProperties();
                 properties.Load(fileStream);
-                fileStream.Close();
 
-                Assert.AreEqual(properties.Count, 5);
-                Assert.AreEqual(properties["key\nwith\nnewlines"], "value");
-                Assert.AreEqual(properties["key-no-newlines"], "Value\nwith\nnewlines.");
+                Assert.AreEqual(5, properties.Count);
+                Assert.AreEqual("value", properties["key\nwith\nnewlines"]);
+                Assert.AreEqual("Value\nwith\nnewlines.", properties["key-no-newlines"]);
 
-                Assert.AreEqual(properties["fruits"], "apple, banana, pear, cantaloupe, watermelon, kiwi, mango");
-                Assert.AreEqual(properties["fruits2"], "apple, banana, pear, cantaloupe, watermelon, ");
-                Assert.AreEqual(properties["kiwi,"], "mango");
+                Assert.AreEqual("apple, banana, pear, cantaloupe, watermelon, kiwi, mango", properties["fruits"]);
+                Assert.AreEqual("apple, banana, pear, cantaloupe, watermelon, ", properties["fruits2"]);
+                Assert.AreEqual("mango", properties["kiwi,"]);
             }
             catch (Exception ex)
             {
                 Assert.Fail(ex.Message);
-            }
-            finally
-            {
-                if (fileStream != null)
-                {
-                    fileStream.Close();
-                }
             }
         }
 
         [Test]
         public void TestSeparators()
         {
-            FileStream fileStream = null;
             try
             {
                 Console.WriteLine("Loading " + SeparatorsTestFile);
 
-                fileStream = new FileStream(SeparatorsTestFile, FileMode.Open);
-                JavaProperties properties = new JavaProperties();
+                using var fileStream = new FileStream(SeparatorsTestFile, FileMode.Open);
+                var properties = new JavaProperties();
                 properties.Load(fileStream);
-                fileStream.Close();
 
-                Assert.AreEqual(properties.Count, 8);
+                Assert.AreEqual(8, properties.Count);
 
-                Assert.AreEqual(properties["a"], "b");
-                Assert.AreEqual(properties["c"], "d");
+                Assert.AreEqual("b", properties["a"]);
+                Assert.AreEqual("d", properties["c"]);
 
-                Assert.AreEqual(properties["e"], "f");
-                Assert.AreEqual(properties["gh"], "ij klm");
+                Assert.AreEqual("f", properties["e"]);
+                Assert.AreEqual("ij klm", properties["gh"]);
 
-                Assert.AreEqual(properties["Truth1"], "Beauty 1");
-                Assert.AreEqual(properties["Truth3"], "Beauty 3");
-                Assert.AreEqual(properties["Truth2"], "Beauty 2");
+                Assert.AreEqual("Beauty 1", properties["Truth1"]);
+                Assert.AreEqual("Beauty 3", properties["Truth3"]);
+                Assert.AreEqual("Beauty 2", properties["Truth2"]);
 
-                Assert.AreEqual(properties["cheeses"], "");
+                Assert.AreEqual(string.Empty, properties["cheeses"]);
             }
             catch (Exception ex)
             {
                 Assert.Fail(ex.Message);
-            }
-            finally
-            {
-                if (fileStream != null)
-                {
-                    fileStream.Close();
-                }
             }
         }
 
         [Test]
         public void TestSpecialCharacters()
         {
-            FileStream fileStream = null;
             try
             {
                 Console.WriteLine("Loading " + SpecialCharactersTestFile);
 
-                fileStream = new FileStream(SpecialCharactersTestFile, FileMode.Open);
-                JavaProperties properties = new JavaProperties();
+                using var fileStream = new FileStream(SpecialCharactersTestFile, FileMode.Open);
+                var properties = new JavaProperties();
                 properties.Load(fileStream);
-                fileStream.Close();
 
-                Assert.AreEqual(properties.Count, 7);
-                Assert.AreEqual(properties["key with spaces"], "value with spaces");
+                Assert.AreEqual(7, properties.Count);
+                Assert.AreEqual("value with spaces", properties["key with spaces"]);
 
-                Assert.AreEqual(properties["anotherKey"], "unicode \\u0041='A'");
-                Assert.AreEqual(properties["\u0000\u001FUnicode-Key"], "\u0000\t\n\u001F\u4567Unicode Value");
+                Assert.AreEqual("unicode \\u0041='A'", properties["anotherKey"]);
+                Assert.AreEqual("\u0000\t\n\u001F\u4567Unicode Value", properties["\u0000\u001FUnicode-Key"]);
 
-                Assert.AreEqual(properties["# key-not-comment"], " value begins with\tspace.");
+                Assert.AreEqual(" value begins with\tspace.", properties["# key-not-comment"]);
 
-                Assert.AreEqual(properties["One"], "Two = Three Four");
-                Assert.AreEqual(properties["Five Six"], "Seven Eight");
-                Assert.AreEqual(properties["Nine"], "Ten ");
+                Assert.AreEqual("Two = Three Four", properties["One"]);
+                Assert.AreEqual("Seven Eight", properties["Five Six"]);
+                Assert.AreEqual("Ten ", properties["Nine"]);
             }
             catch (Exception ex)
             {
                 Assert.Fail(ex.Message);
-            }
-            finally
-            {
-                if (fileStream != null)
-                {
-                    fileStream.Close();
-                }
             }
         }
 
         [Test]
         public void TestUtf8NonAsciiSymbols()
         {
-            FileStream utf8FileStream = null;
-            FileStream isoFileStream = null;
             try
             {
                 Console.WriteLine("Loading " + NonAsciiSymbolsUtf8TestFile);
 
                 // A file containing non-ASCII characters, which is saved using the utf8 encoding
-                utf8FileStream = new FileStream(NonAsciiSymbolsUtf8TestFile, FileMode.Open);
+                using var utf8FileStream = new FileStream(NonAsciiSymbolsUtf8TestFile, FileMode.Open);
 
                 Console.WriteLine("Loading " + NonAsciiSymbolsNativeToAsciiTestFile);
 
                 // A file with the same data as above, but processed with the native2ascii tool from jdk 1.8, and stored in ISO-8859-1. This will work correctly.
-                isoFileStream = new FileStream(NonAsciiSymbolsNativeToAsciiTestFile, FileMode.Open);
+                using var isoFileStream = new FileStream(NonAsciiSymbolsNativeToAsciiTestFile, FileMode.Open);
 
                 // Java properties read from the utf8 file with correct encoding provided
-                JavaProperties utf8PropertiesCorrect = new JavaProperties();
+                var utf8PropertiesCorrect = new JavaProperties();
 
                 // we explicitly specify the encoding, so that UTF8 characters are read using the UTF8 encoding and the data will be correct
                 utf8PropertiesCorrect.Load(utf8FileStream, Encoding.UTF8);
 
-                JavaProperties utf8PropertiesIncorrect = new JavaProperties();
+                var utf8PropertiesIncorrect = new JavaProperties();
                 utf8FileStream.Seek(0, SeekOrigin.Begin);// reset the stream position from the previous loading.
                 // we do not set the encoding, so the data will not appear correctly - UTF8 characters will be read usign the default ISO-8859-1 encoding
                 // this is to ensure that setting the encoding makes a difference
                 utf8PropertiesIncorrect.Load(utf8FileStream);
 
 
-                JavaProperties isoProperties = new JavaProperties();
+                var isoProperties = new JavaProperties();
                 isoProperties.Load(isoFileStream);
 
                 foreach (var key in utf8PropertiesCorrect.Keys)
                 {
-                    // Asert the correct file is identical to its native2ascii version
+                    // Assert the correct file is identical to its native2ascii version
                     Assert.AreEqual(utf8PropertiesCorrect[key], isoProperties[key]);
 
                     if (key.Equals("AsciiText"))
@@ -368,69 +303,45 @@ namespace Kajabity.Tools.Java
                     }
 
                 }
-                isoFileStream.Close();
-
-                //Assert.IsEmpty(properties);
             }
             catch (Exception ex)
             {
                 Assert.Fail(ex.Message);
-            }
-            finally
-            {
-                if (utf8FileStream != null)
-                {
-                    utf8FileStream.Close();
-                }
-                if (isoFileStream != null)
-                {
-                    isoFileStream.Close();
-                }
             }
         }
 
         [Test]
         public void TestUrls()
         {
-            FileStream fileStream = null;
             try
             {
                 Console.WriteLine("Loading " + UrlsTestFile);
 
-                fileStream = new FileStream(UrlsTestFile, FileMode.Open);
-                JavaProperties properties = new JavaProperties();
+                using var fileStream = new FileStream(UrlsTestFile, FileMode.Open);
+                var properties = new JavaProperties();
                 properties.Load(fileStream);
-                fileStream.Close();
 
-                Assert.AreEqual(properties.Count, 3);
+                Assert.AreEqual(3, properties.Count);
 
-                Assert.AreEqual(properties["http://www.kajabity.com"], "my lovely web site.");
-                Assert.AreEqual(properties["my-blog"], "http://www.kajabity.com");
-                Assert.AreEqual(properties["my-blog-2"], "{my-blog}");
+                Assert.AreEqual("my lovely web site.", properties["http://www.kajabity.com"]);
+                Assert.AreEqual("http://www.kajabity.com", properties["my-blog"]);
+                Assert.AreEqual("{my-blog}", properties["my-blog-2"]);
             }
             catch (Exception ex)
             {
                 Assert.Fail(ex.Message);
-            }
-            finally
-            {
-                if (fileStream != null)
-                {
-                    fileStream.Close();
-                }
             }
         }
 
         [Test]
         public void TestUtf8WithBom()
         {
-            FileStream fileStream = null;
             try
             {
                 Console.WriteLine("Loading " + Utf8WithBomFile);
 
-                fileStream = new FileStream(Utf8WithBomFile, FileMode.Open);
-                JavaProperties properties = new JavaProperties();
+                using var fileStream = new FileStream(Utf8WithBomFile, FileMode.Open);
+                var properties = new JavaProperties();
 
                 properties.Load(fileStream, Encoding.UTF8);
 
@@ -442,39 +353,24 @@ namespace Kajabity.Tools.Java
             {
                 Assert.Fail(ex.Message);
             }
-            finally
-            {
-                if (fileStream != null)
-                {
-                    fileStream.Close();
-                }
-            }
         }
 
         [Test]
         public void TestLineBreakInUnicodeSequence()
         {
-            FileStream fileStream = null;
             try
             {
                 // Read the test properties file.
                 Console.WriteLine("Loading " + LineBreakWithUnicodeFile);
-                fileStream = new FileStream(LineBreakWithUnicodeFile, FileMode.Open);
-                JavaProperties properties = new JavaProperties();
+                using var fileStream = new FileStream(LineBreakWithUnicodeFile, FileMode.Open);
+                var properties = new JavaProperties();
                 properties.Load(fileStream);
 
-                Assert.AreEqual(properties["AAAP"], "B");
+                Assert.AreEqual("B", properties["AAAP"]);
             }
             catch (Exception ex)
             {
                 Assert.Fail(ex.Message);
-            }
-            finally
-            {
-                if (fileStream != null)
-                {
-                    fileStream.Close();
-                }
             }
         }
 
@@ -482,7 +378,6 @@ namespace Kajabity.Tools.Java
         [Test]
         public void TestMissingProperty()
         {
-            FileStream fileStream = null;
             try
             {
                 Console.WriteLine("Loading " + EmptyTestFile);
@@ -492,10 +387,9 @@ namespace Kajabity.Tools.Java
                     { "test", "value" }
                 };
 
-                fileStream = new FileStream(EmptyTestFile, FileMode.Open);
-                JavaProperties properties = new JavaProperties(defaults);
+                using var fileStream = new FileStream(EmptyTestFile, FileMode.Open);
+                var properties = new JavaProperties(defaults);
                 properties.Load(fileStream);
-                fileStream.Close();
 
                 Assert.IsEmpty(properties);
                 Assert.IsNull(properties.GetProperty("NonExistent"));
@@ -506,13 +400,6 @@ namespace Kajabity.Tools.Java
             catch (Exception ex)
             {
                 Assert.Fail(ex.Message);
-            }
-            finally
-            {
-                if (fileStream != null)
-                {
-                    fileStream.Close();
-                }
             }
         }
     }
