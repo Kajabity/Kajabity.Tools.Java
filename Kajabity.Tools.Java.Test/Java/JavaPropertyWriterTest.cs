@@ -18,7 +18,6 @@
  * http://www.kajabity.com
  */
 
-using System;
 using System.IO;
 using System.Text;
 using NUnit.Framework;
@@ -65,437 +64,425 @@ namespace Kajabity.Tools.Java
         [Test]
         public void JavaPropertyWriter_shouldWriteComment()
         {
-            String comment = "a comment";
-            JavaProperties properties = new JavaProperties();
+            const string comment = "a comment";
+            var properties = new JavaProperties();
 
-            using (var stream = new MemoryStream())
-            {
-                properties.Store(stream, comment);
+            using var stream = new MemoryStream();
+            properties.Store(stream, comment);
 
-                string actual = Encoding.GetEncoding("iso-8859-1").GetString(stream.ToArray());
-                Assert.That( actual, Does.Contain( comment ) );
-            }
+            var actual = Encoding.GetEncoding("iso-8859-1").GetString(stream.ToArray());
+            Assert.That(actual, Does.Contain(comment));
         }
 
         [Test]
         public void JavaPropertyWriter_shouldWriteTimestampIfTrue()
         {
-            JavaProperties properties = new JavaProperties();
+            var properties = new JavaProperties();
 
-            using (var stream = new MemoryStream())
-            {
-                properties.Store(stream, true);
+            using var stream = new MemoryStream();
+            properties.Store(stream, null, null, true);
 
-                string actual = Encoding.GetEncoding("iso-8859-1").GetString(stream.ToArray());
-                Assert.That(actual, Does.StartWith("#"));
-            }
+            var actual = Encoding.GetEncoding("iso-8859-1").GetString(stream.ToArray());
+            Assert.That(actual, Does.StartWith("#"));
         }
 
         [Test]
         public void JavaPropertyWriter_shouldNotWriteTimestampIfFalse()
         {
-            JavaProperties properties = new JavaProperties();
+            var properties = new JavaProperties();
 
-            using (var stream = new MemoryStream())
-            {
-                properties.Store(stream, false);
+            using var stream = new MemoryStream();
+            properties.Store(stream);
 
-                string actual = Encoding.GetEncoding("iso-8859-1").GetString(stream.ToArray());
-                Assert.IsEmpty(actual);
-            }
+            var actual = Encoding.GetEncoding("iso-8859-1").GetString(stream.ToArray());
+            Assert.IsEmpty(actual);
         }
 
         [Test]
         public void JavaPropertyWriter_shouldEscapeBackslash()
         {
-            JavaProperties properties = new JavaProperties();
-            properties.Add( "\\first", "anything" );
-            properties.Add( "sec\\ond", "nothing" );
-            properties.Add( "third\\", "something" );
-            properties.Add( "fourth", "some\\thing" );
-
-            using( var stream = new MemoryStream() )
+            var properties = new JavaProperties
             {
-                properties.Store( stream, null );
+                {"\\first", "anything"},
+                {"sec\\ond", "nothing"},
+                {"third\\", "something"},
+                {"fourth", "some\\thing"}
+            };
 
-                string actual = Encoding.GetEncoding( "iso-8859-1" ).GetString( stream.ToArray() );
-                Assert.That( actual, Does.Contain( "\\\\first=anything" ) );
-                Assert.That( actual, Does.Contain( "sec\\\\ond=nothing" ) );
-                Assert.That( actual, Does.Contain( "third\\\\=something" ) );
-                Assert.That( actual, Does.Contain( "fourth=some\\\\thing" ) );
-            }
+            using var stream = new MemoryStream();
+            properties.Store(stream);
+
+            var actual = Encoding.GetEncoding("iso-8859-1").GetString(stream.ToArray());
+            Assert.That(actual, Does.Contain("\\\\first=anything"));
+            Assert.That(actual, Does.Contain("sec\\\\ond=nothing"));
+            Assert.That(actual, Does.Contain("third\\\\=something"));
+            Assert.That(actual, Does.Contain("fourth=some\\\\thing"));
         }
 
         [Test]
         public void JavaPropertyWriter_shouldEscapeWhitespaceInKey()
         {
-            JavaProperties properties = new JavaProperties();
-            properties.Add( " first", "anything" );
-            properties.Add( "sec ond", "nothing" );
-            properties.Add( "third ", "something" );
-
-            using( var stream = new MemoryStream() )
+            var properties = new JavaProperties
             {
-                properties.Store( stream, null );
+                {" first", "anything"},
+                {"sec ond", "nothing"},
+                {"third ", "something"}
+            };
 
-                string actual = Encoding.GetEncoding( "iso-8859-1" ).GetString( stream.ToArray() );
-                Assert.That( actual, Does.Contain( "\\ first=anything" ) );
-                Assert.That( actual, Does.Contain( "sec\\ ond=nothing" ) );
-                Assert.That( actual, Does.Contain( "third\\ =something" ) );
-            }
+            using var stream = new MemoryStream();
+            properties.Store(stream);
+
+            var actual = Encoding.GetEncoding("iso-8859-1").GetString(stream.ToArray());
+            Assert.That(actual, Does.Contain("\\ first=anything"));
+            Assert.That(actual, Does.Contain("sec\\ ond=nothing"));
+            Assert.That(actual, Does.Contain("third\\ =something"));
         }
 
         [Test]
         public void JavaPropertyWriter_shouldEscapeWhitespaceAtStartOfValue()
         {
-            JavaProperties properties = new JavaProperties();
-            properties.Add( "first", " anything" );
-            properties.Add( "second", "noth ing" );
-            properties.Add( "third", "something " );
-
-            using( var stream = new MemoryStream() )
+            var properties = new JavaProperties
             {
-                properties.Store( stream, null );
+                {"first", " anything"},
+                {"second", "noth ing"},
+                {"third", "something "}
+            };
 
-                string actual = Encoding.GetEncoding( "iso-8859-1" ).GetString( stream.ToArray() );
-                Assert.That( actual, Does.Contain( "first=\\ anything" ) );
-                Assert.That( actual, Does.Contain( "second=noth ing" ) );
-                Assert.That( actual, Does.Contain( "third=something " ) );
-            }
+            using var stream = new MemoryStream();
+            properties.Store(stream);
+
+            var actual = Encoding.GetEncoding("iso-8859-1").GetString(stream.ToArray());
+            Assert.That(actual, Does.Contain("first=\\ anything"));
+            Assert.That(actual, Does.Contain("second=noth ing"));
+            Assert.That(actual, Does.Contain("third=something "));
         }
 
         [Test]
         public void JavaPropertyWriter_shouldEscapeTabsInKey()
         {
-            JavaProperties properties = new JavaProperties();
-            properties.Add( "\tfirst", "anything" );
-            properties.Add( "sec\tond", "nothing" );
-            properties.Add( "third\t", "something" );
-
-            using( var stream = new MemoryStream() )
+            var properties = new JavaProperties
             {
-                properties.Store( stream, null );
+                {"\tfirst", "anything"},
+                {"sec\tond", "nothing"},
+                {"third\t", "something"}
+            };
 
-                string actual = Encoding.GetEncoding( "iso-8859-1" ).GetString( stream.ToArray() );
-                Assert.That( actual, Does.Contain( "\\tfirst=anything" ) );
-                Assert.That( actual, Does.Contain( "sec\\tond=nothing" ) );
-                Assert.That( actual, Does.Contain( "third\\t=something" ) );
-            }
+            using var stream = new MemoryStream();
+            properties.Store(stream);
+
+            var actual = Encoding.GetEncoding("iso-8859-1").GetString(stream.ToArray());
+            Assert.That(actual, Does.Contain("\\tfirst=anything"));
+            Assert.That(actual, Does.Contain("sec\\tond=nothing"));
+            Assert.That(actual, Does.Contain("third\\t=something"));
         }
 
         [Test]
         public void JavaPropertyWriter_shouldEscapeTabsInValue()
         {
-            JavaProperties properties = new JavaProperties();
-            properties.Add( "first", "\tanything" );
-            properties.Add( "second", "noth\ting" );
-            properties.Add( "third", "something\t" );
-
-            using( var stream = new MemoryStream() )
+            var properties = new JavaProperties
             {
-                properties.Store( stream, null );
+                {"first", "\tanything"},
+                {"second", "noth\ting"},
+                {"third", "something\t"}
+            };
 
-                string actual = Encoding.GetEncoding( "iso-8859-1" ).GetString( stream.ToArray() );
-                Assert.That( actual, Does.Contain( "first=\\tanything" ) );
-                Assert.That( actual, Does.Contain( "second=noth\\ting" ) );
-                Assert.That( actual, Does.Contain( "third=something\\t" ) );
-            }
+            using var stream = new MemoryStream();
+            properties.Store(stream);
+
+            var actual = Encoding.GetEncoding("iso-8859-1").GetString(stream.ToArray());
+            Assert.That(actual, Does.Contain("first=\\tanything"));
+            Assert.That(actual, Does.Contain("second=noth\\ting"));
+            Assert.That(actual, Does.Contain("third=something\\t"));
         }
 
         [Test]
         public void JavaPropertyWriter_shouldEscapeFormFeedInKey()
         {
-            JavaProperties properties = new JavaProperties();
-            properties.Add( "\ffirst", "anything" );
-            properties.Add( "sec\fond", "nothing" );
-            properties.Add( "third\f", "something" );
-
-            using( var stream = new MemoryStream() )
+            var properties = new JavaProperties
             {
-                properties.Store( stream, null );
+                {"\ffirst", "anything"},
+                {"sec\fond", "nothing"},
+                {"third\f", "something"}
+            };
 
-                string actual = Encoding.GetEncoding( "iso-8859-1" ).GetString( stream.ToArray() );
-                Assert.That( actual, Does.Contain( "\\ffirst=anything" ) );
-                Assert.That( actual, Does.Contain( "sec\\fond=nothing" ) );
-                Assert.That( actual, Does.Contain( "third\\f=something" ) );
-            }
+            using var stream = new MemoryStream();
+            properties.Store(stream);
+
+            var actual = Encoding.GetEncoding("iso-8859-1").GetString(stream.ToArray());
+            Assert.That(actual, Does.Contain("\\ffirst=anything"));
+            Assert.That(actual, Does.Contain("sec\\fond=nothing"));
+            Assert.That(actual, Does.Contain("third\\f=something"));
         }
 
         [Test]
         public void JavaPropertyWriter_shouldEscapeFormFeedInValue()
         {
-            JavaProperties properties = new JavaProperties();
-            properties.Add( "first", "\fanything" );
-            properties.Add( "second", "noth\fing" );
-            properties.Add( "third", "something\f" );
-
-            using( var stream = new MemoryStream() )
+            var properties = new JavaProperties
             {
-                properties.Store( stream, null );
+                {"first", "\fanything"},
+                {"second", "noth\fing"},
+                {"third", "something\f"}
+            };
 
-                string actual = Encoding.GetEncoding( "iso-8859-1" ).GetString( stream.ToArray() );
-                Assert.That( actual, Does.Contain( "first=\\fanything" ) );
-                Assert.That( actual, Does.Contain( "second=noth\\fing" ) );
-                Assert.That( actual, Does.Contain( "third=something\\f" ) );
-            }
+            using var stream = new MemoryStream();
+            properties.Store(stream);
+
+            var actual = Encoding.GetEncoding("iso-8859-1").GetString(stream.ToArray());
+            Assert.That(actual, Does.Contain("first=\\fanything"));
+            Assert.That(actual, Does.Contain("second=noth\\fing"));
+            Assert.That(actual, Does.Contain("third=something\\f"));
         }
 
         [Test]
         public void JavaPropertyWriter_shouldEscapeNewlineInKey()
         {
-            JavaProperties properties = new JavaProperties();
-            properties.Add( "\nfirst", "anything" );
-            properties.Add( "sec\nond", "nothing" );
-            properties.Add( "third\n", "something" );
-
-            using( var stream = new MemoryStream() )
+            var properties = new JavaProperties
             {
-                properties.Store( stream, null );
+                {"\nfirst", "anything"},
+                {"sec\nond", "nothing"},
+                {"third\n", "something"}
+            };
 
-                string actual = Encoding.GetEncoding( "iso-8859-1" ).GetString( stream.ToArray() );
-                Assert.That( actual, Does.Contain( "\\nfirst=anything" ) );
-                Assert.That( actual, Does.Contain( "sec\\nond=nothing" ) );
-                Assert.That( actual, Does.Contain( "third\\n=something" ) );
-            }
+            using var stream = new MemoryStream();
+            properties.Store(stream);
+
+            var actual = Encoding.GetEncoding("iso-8859-1").GetString(stream.ToArray());
+            Assert.That(actual, Does.Contain("\\nfirst=anything"));
+            Assert.That(actual, Does.Contain("sec\\nond=nothing"));
+            Assert.That(actual, Does.Contain("third\\n=something"));
         }
 
         [Test]
         public void JavaPropertyWriter_shouldEscapeNewlineInValue()
         {
-            JavaProperties properties = new JavaProperties();
-            properties.Add( "first", "\nanything" );
-            properties.Add( "second", "noth\ning" );
-            properties.Add( "third", "something\n" );
-
-            using( var stream = new MemoryStream() )
+            var properties = new JavaProperties
             {
-                properties.Store( stream, null );
+                {"first", "\nanything"},
+                {"second", "noth\ning"},
+                {"third", "something\n"}
+            };
 
-                string actual = Encoding.GetEncoding( "iso-8859-1" ).GetString( stream.ToArray() );
-                Assert.That( actual, Does.Contain( "first=\\nanything" ) );
-                Assert.That( actual, Does.Contain( "second=noth\\ning" ) );
-                Assert.That( actual, Does.Contain( "third=something\\n" ) );
-            }
+            using var stream = new MemoryStream();
+            properties.Store(stream);
+
+            var actual = Encoding.GetEncoding("iso-8859-1").GetString(stream.ToArray());
+            Assert.That(actual, Does.Contain("first=\\nanything"));
+            Assert.That(actual, Does.Contain("second=noth\\ning"));
+            Assert.That(actual, Does.Contain("third=something\\n"));
         }
 
         [Test]
         public void JavaPropertyWriter_shouldEscapeReturnInKey()
         {
-            JavaProperties properties = new JavaProperties();
-            properties.Add( "\rfirst", "anything" );
-            properties.Add( "sec\rond", "nothing" );
-            properties.Add( "third\r", "something" );
-
-            using( var stream = new MemoryStream() )
+            var properties = new JavaProperties
             {
-                properties.Store( stream, null );
+                {"\rfirst", "anything"},
+                {"sec\rond", "nothing"},
+                {"third\r", "something"}
+            };
 
-                string actual = Encoding.GetEncoding( "iso-8859-1" ).GetString( stream.ToArray() );
-                Assert.That( actual, Does.Contain( "\\rfirst=anything" ) );
-                Assert.That( actual, Does.Contain( "sec\\rond=nothing" ) );
-                Assert.That( actual, Does.Contain( "third\\r=something" ) );
-            }
+            using var stream = new MemoryStream();
+            properties.Store(stream);
+
+            var actual = Encoding.GetEncoding("iso-8859-1").GetString(stream.ToArray());
+            Assert.That(actual, Does.Contain("\\rfirst=anything"));
+            Assert.That(actual, Does.Contain("sec\\rond=nothing"));
+            Assert.That(actual, Does.Contain("third\\r=something"));
         }
 
         [Test]
         public void JavaPropertyWriter_shouldEscapeReturnInValue()
         {
-            JavaProperties properties = new JavaProperties();
-            properties.Add( "first", "\ranything" );
-            properties.Add( "second", "noth\ring" );
-            properties.Add( "third", "something\r" );
-
-            using( var stream = new MemoryStream() )
+            var properties = new JavaProperties
             {
-                properties.Store( stream, null );
+                {"first", "\ranything"},
+                {"second", "noth\ring"},
+                {"third", "something\r"}
+            };
 
-                string actual = Encoding.GetEncoding( "iso-8859-1" ).GetString( stream.ToArray() );
-                Assert.That( actual, Does.Contain( "first=\\ranything" ) );
-                Assert.That( actual, Does.Contain( "second=noth\\ring" ) );
-                Assert.That( actual, Does.Contain( "third=something\\r" ) );
-            }
+            using var stream = new MemoryStream();
+            properties.Store(stream);
+
+            var actual = Encoding.GetEncoding("iso-8859-1").GetString(stream.ToArray());
+            Assert.That(actual, Does.Contain("first=\\ranything"));
+            Assert.That(actual, Does.Contain("second=noth\\ring"));
+            Assert.That(actual, Does.Contain("third=something\\r"));
         }
 
         [Test]
         public void JavaPropertyWriter_shouldEscapeHashInKey()
         {
-            JavaProperties properties = new JavaProperties();
-            properties.Add( "#first", "anything" );
-            properties.Add( "sec#ond", "nothing" );
-            properties.Add( "third#", "something" );
-
-            using( var stream = new MemoryStream() )
+            var properties = new JavaProperties
             {
-                properties.Store( stream, null );
+                {"#first", "anything"},
+                {"sec#ond", "nothing"},
+                {"third#", "something"}
+            };
 
-                string actual = Encoding.GetEncoding( "iso-8859-1" ).GetString( stream.ToArray() );
-                Assert.That( actual, Does.Contain( "\\#first=anything" ) );
-                Assert.That( actual, Does.Contain( "sec\\#ond=nothing" ) );
-                Assert.That( actual, Does.Contain( "third\\#=something" ) );
-            }
+            using var stream = new MemoryStream();
+            properties.Store(stream);
+
+            var actual = Encoding.GetEncoding("iso-8859-1").GetString(stream.ToArray());
+            Assert.That(actual, Does.Contain("\\#first=anything"));
+            Assert.That(actual, Does.Contain("sec\\#ond=nothing"));
+            Assert.That(actual, Does.Contain("third\\#=something"));
         }
 
         [Test]
         public void JavaPropertyWriter_shouldEscapeHashInValue()
         {
-            JavaProperties properties = new JavaProperties();
-            properties.Add( "first", "#anything" );
-            properties.Add( "second", "noth#ing" );
-            properties.Add( "third", "something#" );
-
-            using( var stream = new MemoryStream() )
+            var properties = new JavaProperties
             {
-                properties.Store( stream, null );
+                {"first", "#anything"},
+                {"second", "noth#ing"},
+                {"third", "something#"}
+            };
 
-                string actual = Encoding.GetEncoding( "iso-8859-1" ).GetString( stream.ToArray() );
-                Assert.That( actual, Does.Contain( "first=\\#anything" ) );
-                Assert.That( actual, Does.Contain( "second=noth\\#ing" ) );
-                Assert.That( actual, Does.Contain( "third=something\\#" ) );
-            }
+            using var stream = new MemoryStream();
+            properties.Store(stream);
+
+            var actual = Encoding.GetEncoding("iso-8859-1").GetString(stream.ToArray());
+            Assert.That(actual, Does.Contain("first=\\#anything"));
+            Assert.That(actual, Does.Contain("second=noth\\#ing"));
+            Assert.That(actual, Does.Contain("third=something\\#"));
         }
 
         [Test]
         public void JavaPropertyWriter_shouldEscapePlingInKey()
         {
-            JavaProperties properties = new JavaProperties();
-            properties.Add( "!first", "anything" );
-            properties.Add( "sec!ond", "nothing" );
-            properties.Add( "third!", "something" );
-
-            using( var stream = new MemoryStream() )
+            var properties = new JavaProperties
             {
-                properties.Store( stream, null );
+                {"!first", "anything"},
+                {"sec!ond", "nothing"},
+                {"third!", "something"}
+            };
 
-                string actual = Encoding.GetEncoding( "iso-8859-1" ).GetString( stream.ToArray() );
-                Assert.That( actual, Does.Contain( "\\!first=anything" ) );
-                Assert.That( actual, Does.Contain( "sec\\!ond=nothing" ) );
-                Assert.That( actual, Does.Contain( "third\\!=something" ) );
-            }
+            using var stream = new MemoryStream();
+            properties.Store(stream);
+
+            var actual = Encoding.GetEncoding("iso-8859-1").GetString(stream.ToArray());
+            Assert.That(actual, Does.Contain("\\!first=anything"));
+            Assert.That(actual, Does.Contain("sec\\!ond=nothing"));
+            Assert.That(actual, Does.Contain("third\\!=something"));
         }
 
         [Test]
         public void JavaPropertyWriter_shouldEscapePlingInValue()
         {
-            JavaProperties properties = new JavaProperties();
-            properties.Add( "first", "!anything" );
-            properties.Add( "second", "noth!ing" );
-            properties.Add( "third", "something!" );
-
-            using( var stream = new MemoryStream() )
+            var properties = new JavaProperties
             {
-                properties.Store( stream, null );
+                {"first", "!anything"},
+                {"second", "noth!ing"},
+                {"third", "something!"}
+            };
 
-                string actual = Encoding.GetEncoding( "iso-8859-1" ).GetString( stream.ToArray() );
-                Assert.That( actual, Does.Contain( "first=\\!anything" ) );
-                Assert.That( actual, Does.Contain( "second=noth\\!ing" ) );
-                Assert.That( actual, Does.Contain( "third=something\\!" ) );
-            }
+            using var stream = new MemoryStream();
+            properties.Store(stream);
+
+            var actual = Encoding.GetEncoding("iso-8859-1").GetString(stream.ToArray());
+            Assert.That(actual, Does.Contain("first=\\!anything"));
+            Assert.That(actual, Does.Contain("second=noth\\!ing"));
+            Assert.That(actual, Does.Contain("third=something\\!"));
         }
 
         [Test]
         public void JavaPropertyWriter_shouldEscapeEqualsInKey()
         {
-            JavaProperties properties = new JavaProperties();
-            properties.Add( "=first", "anything" );
-            properties.Add( "sec=ond", "nothing" );
-            properties.Add( "third=", "something" );
-
-            using( var stream = new MemoryStream() )
+            var properties = new JavaProperties
             {
-                properties.Store( stream, null );
+                {"=first", "anything"},
+                {"sec=ond", "nothing"},
+                {"third=", "something"}
+            };
 
-                string actual = Encoding.GetEncoding( "iso-8859-1" ).GetString( stream.ToArray() );
-                Assert.That( actual, Does.Contain( "\\=first=anything" ) );
-                Assert.That( actual, Does.Contain( "sec\\=ond=nothing" ) );
-                Assert.That( actual, Does.Contain( "third\\==something" ) );
-            }
+            using var stream = new MemoryStream();
+            properties.Store(stream);
+
+            var actual = Encoding.GetEncoding("iso-8859-1").GetString(stream.ToArray());
+            Assert.That(actual, Does.Contain("\\=first=anything"));
+            Assert.That(actual, Does.Contain("sec\\=ond=nothing"));
+            Assert.That(actual, Does.Contain("third\\==something"));
         }
 
         [Test]
         public void JavaPropertyWriter_shouldEscapeEqualsInValue()
         {
-            JavaProperties properties = new JavaProperties();
-            properties.Add( "first", "=anything" );
-            properties.Add( "second", "noth=ing" );
-            properties.Add( "third", "something=" );
-
-            using( var stream = new MemoryStream() )
+            var properties = new JavaProperties
             {
-                properties.Store( stream, null );
+                {"first", "=anything"},
+                {"second", "noth=ing"},
+                {"third", "something="}
+            };
 
-                string actual = Encoding.GetEncoding( "iso-8859-1" ).GetString( stream.ToArray() );
-                Assert.That( actual, Does.Contain( "first=\\=anything" ) );
-                Assert.That( actual, Does.Contain( "second=noth\\=ing" ) );
-                Assert.That( actual, Does.Contain( "third=something\\=" ) );
-            }
+            using var stream = new MemoryStream();
+            properties.Store(stream);
+
+            var actual = Encoding.GetEncoding("iso-8859-1").GetString(stream.ToArray());
+            Assert.That(actual, Does.Contain("first=\\=anything"));
+            Assert.That(actual, Does.Contain("second=noth\\=ing"));
+            Assert.That(actual, Does.Contain("third=something\\="));
         }
 
         [Test]
         public void JavaPropertyWriter_shouldEscapeColonInKey()
         {
-            JavaProperties properties = new JavaProperties();
-            properties.Add( ":first", "anything" );
-            properties.Add( "sec:ond", "nothing" );
-            properties.Add( "third:", "something" );
-
-            using( var stream = new MemoryStream() )
+            var properties = new JavaProperties
             {
-                properties.Store( stream, null );
+                {":first", "anything"},
+                {"sec:ond", "nothing"},
+                {"third:", "something"}
+            };
 
-                string actual = Encoding.GetEncoding( "iso-8859-1" ).GetString( stream.ToArray() );
-                Assert.That( actual, Does.Contain( "\\:first=anything" ) );
-                Assert.That( actual, Does.Contain( "sec\\:ond=nothing" ) );
-                Assert.That( actual, Does.Contain( "third\\:=something" ) );
-            }
+            using var stream = new MemoryStream();
+            properties.Store(stream);
+
+            var actual = Encoding.GetEncoding("iso-8859-1").GetString(stream.ToArray());
+            Assert.That(actual, Does.Contain("\\:first=anything"));
+            Assert.That(actual, Does.Contain("sec\\:ond=nothing"));
+            Assert.That(actual, Does.Contain("third\\:=something"));
         }
 
         [Test]
         public void JavaPropertyWriter_shouldEscapeColonInValue()
         {
-            JavaProperties properties = new JavaProperties();
-            properties.Add( "first", ":anything" );
-            properties.Add( "second", "noth:ing" );
-            properties.Add( "third", "something:" );
-
-            using( var stream = new MemoryStream() )
+            var properties = new JavaProperties
             {
-                properties.Store( stream, null );
+                {"first", ":anything"},
+                {"second", "noth:ing"},
+                {"third", "something:"}
+            };
 
-                string actual = Encoding.GetEncoding( "iso-8859-1" ).GetString( stream.ToArray() );
-                Assert.That( actual, Does.Contain( "first=\\:anything" ) );
-                Assert.That( actual, Does.Contain( "second=noth\\:ing" ) );
-                Assert.That( actual, Does.Contain( "third=something\\:" ) );
-            }
+            using var stream = new MemoryStream();
+            properties.Store(stream);
+
+            var actual = Encoding.GetEncoding("iso-8859-1").GetString(stream.ToArray());
+            Assert.That(actual, Does.Contain("first=\\:anything"));
+            Assert.That(actual, Does.Contain("second=noth\\:ing"));
+            Assert.That(actual, Does.Contain("third=something\\:"));
         }
 
         [Test]
         public void JavaPropertyWriter_shouldEscapeExtendedCharsInKey()
         {
-            JavaProperties properties = new JavaProperties();
-            properties.Add( "Привет","Greeting" );
+            var properties = new JavaProperties {{"Привет", "Greeting"}};
 
-            using( var stream = new MemoryStream() )
-            {
-                properties.Store( stream, null );
+            using var stream = new MemoryStream();
+            properties.Store(stream);
 
-                string actual = Encoding.GetEncoding( "iso-8859-1" ).GetString( stream.ToArray() );
-                Assert.That( actual, Does.Contain( "\\u041F\\u0440\\u0438\\u0432\\u0435\\u0442=Greeting" ) );
-            }
+            var actual = Encoding.GetEncoding("iso-8859-1").GetString(stream.ToArray());
+            Assert.That(actual, Does.Contain("\\u041F\\u0440\\u0438\\u0432\\u0435\\u0442=Greeting"));
         }
 
         [Test]
         public void JavaPropertyWriter_shouldEscapeExtendedCharsInValue()
         {
-            JavaProperties properties = new JavaProperties();
-            properties.Add( "Greeting", "Привет" );
+            var properties = new JavaProperties {{"Greeting", "Привет"}};
 
-            using( var stream = new MemoryStream() )
-            {
-                properties.Store( stream, null );
+            using var stream = new MemoryStream();
+            properties.Store(stream);
 
-                string actual = Encoding.GetEncoding( "iso-8859-1" ).GetString( stream.ToArray() );
-                Assert.That( actual, Does.Contain( "Greeting=\\u041F\\u0440\\u0438\\u0432\\u0435\\u0442" ) );
-            }
+            var actual = Encoding.GetEncoding("iso-8859-1").GetString(stream.ToArray());
+            Assert.That(actual, Does.Contain("Greeting=\\u041F\\u0440\\u0438\\u0432\\u0435\\u0442"));
         }
 
         //Key no value

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard1.1;netstandard1.0;net5.0;net40;net20</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net462;net47;net471;net472;net48;net481;net6.0</TargetFrameworks>
     <!-- Assembly info properties -->
     <AssemblyName>Kajabity.Tools.Java</AssemblyName>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
@@ -29,8 +29,6 @@
     <RepositoryUrl>https://github.com/Kajabity/Kajabity.Tools.Java</RepositoryUrl>
   </PropertyGroup>
 
-  <Import Project="MultiTargetFrameworkSupport.targets" />
-
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -41,7 +39,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Kajabity.Tools</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
-    <DocumentationFile>$(OutputPath)\$(AssemblyName).xml</DocumentationFile>
+    <DocumentationFile></DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -60,5 +58,6 @@
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Kajabity.Tools.Java.snk</AssemblyOriginatorKeyFile>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 </Project>

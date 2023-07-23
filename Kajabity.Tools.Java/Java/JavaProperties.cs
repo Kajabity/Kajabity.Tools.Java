@@ -37,13 +37,10 @@ namespace Kajabity.Tools.Java
     {
         /// <summary>
         /// Gets a reference to the ISO-8859-1 encoding (code page 28591). This is the Java standard for .properties files.
+        /// 28591              iso-8859-1                   Western European (ISO)
+        /// verified from http://msdn.microsoft.com/en-us/library/system.text.encodinginfo.getencoding.aspx
         /// </summary>
         internal static Encoding DefaultEncoding => Encoding.GetEncoding("iso-8859-1");
-
-        //TODO: Confirm correct codepage:
-        //  28591              iso-8859-1                   Western European (ISO)
-        //  28592              iso-8859-2                   Central European (ISO)
-        //  from http://msdn.microsoft.com/en-us/library/system.text.encodinginfo.getencoding.aspx
 
         /// <summary>
         /// A reference to an optional set of default properties - these values are returned
@@ -66,18 +63,7 @@ namespace Kajabity.Tools.Java
         /// return when the requested key has not been set.</param>
         public JavaProperties(Dictionary<string, string> defaults)
         {
-            this.Defaults = defaults;
-        }
-
-        /// <summary>
-        /// Load Java Properties from a stream expecting the format as described in <see cref="JavaPropertyReader"/>.
-        /// </summary>
-        /// <param name="streamIn">An input stream to read properties from.</param>
-        /// <exception cref="ParseException">If the stream source is invalid.</exception>
-        public void Load(Stream streamIn)
-        {
-            JavaPropertyReader reader = new JavaPropertyReader(this);
-            reader.Parse(streamIn);
+            Defaults = defaults;
         }
 
         /// <summary>
@@ -86,41 +72,10 @@ namespace Kajabity.Tools.Java
         /// </summary>
         /// <param name="streamIn">An input stream to read properties from.</param>
         /// <param name="encoding">The stream's encoding.</param>
-        public void Load(Stream streamIn, Encoding encoding)
+        public void Load(Stream streamIn, Encoding encoding = null)
         {
-            JavaPropertyReader reader = new JavaPropertyReader(this);
+            var reader = new JavaPropertyReader(this);
             reader.Parse(streamIn, encoding);
-        }
-
-        /// <summary>
-        /// Store the contents of this collection of properties to the stream in the format
-        /// used for Java ".properties" files using an instance of <see cref="JavaPropertyWriter"/>.
-        /// The keys and values will be minimally escaped to ensure special characters are read back
-        /// in properly.  Keys are not sorted.  The file will begin with a comment identifying the
-        /// date - and an additional comment may be included.
-        /// </summary>
-        /// <param name="streamOut">An output stream to write the properties to.</param>
-        /// <param name="comments">Optional additional comment to include at the head of the output (null to omit).</param>
-        public void Store(Stream streamOut, string comments)
-        {
-            JavaPropertyWriter writer = new JavaPropertyWriter(this);
-            writer.Write(streamOut, comments);
-        }
-
-        /// <summary>
-        /// Store the contents of this collection of properties to the stream in the format
-        /// used for Java ".properties" files using an instance of <see cref="JavaPropertyWriter"/>.
-        /// The keys and values will be minimally escaped to ensure special characters are read back
-        /// in properly.  Keys are not sorted.  The file may begin with a comment identifying the
-        /// date.
-        /// </summary>
-        /// <param name="streamOut">An output stream to write the properties to.</param>
-        /// <param name="outputTimestamp">Indicate that a comment with a timestamp should be output (true) or not (false).</param>
-        public void Store(Stream streamOut, bool outputTimestamp)
-        {
-            JavaPropertyWriter writer = new JavaPropertyWriter(this);
-            writer.OutputTimestamp = outputTimestamp;
-            writer.Write(streamOut, null);
         }
 
         /// <summary>
@@ -132,33 +87,21 @@ namespace Kajabity.Tools.Java
         /// </summary>
         /// <param name="streamOut">An output stream to write the properties to.</param>
         /// <param name="comments">Optional additional comment to include at the head of the output.</param>
-        /// <param name="encoding">The <see cref="System.Text.Encoding">encoding</see> that is used to write the properies file stream.</param>
+        /// <param name="encoding">The <see cref="System.Text.Encoding">encoding</see> that is used to write the properties file stream.</param>
         /// <param name="outputTimestamp">Indicate that a comment with a timestamp should be output (true) or not (false).</param>
-        public void Store(Stream streamOut, string comments, Encoding encoding, bool outputTimestamp)
+        public void Store(Stream streamOut, string comments = null, Encoding encoding = null, bool outputTimestamp = false)
         {
-            JavaPropertyWriter writer = new JavaPropertyWriter(this);
-            writer.OutputTimestamp = outputTimestamp;
-            writer.Write(streamOut, comments, encoding);
-        }
+            if (encoding == null)
+            {
+                encoding = DefaultEncoding;
+            }
 
-        /// <summary>
-        /// Get the value for the specified key value.  If the key is not found, then return the
-        /// default value - and if still not found, return null.
-        /// </summary>
-        /// <param name="key">The key whose value should be returned.</param>
-        /// <returns>The value corresponding to the key - or null if not found.</returns>
-        public string GetProperty(string key)
-        {
-            string value = null;
-            if (TryGetValue(key, out value))
+            var writer = new JavaPropertyWriter(this)
             {
-                return value;
-            }
-            else if (Defaults != null && Defaults.TryGetValue(key, out value))
-            {
-                return value;
-            }
-            return null;
+                OutputTimestamp = outputTimestamp
+            };
+
+            writer.Write(streamOut, comments, encoding);
         }
 
         /// <summary>
@@ -168,10 +111,19 @@ namespace Kajabity.Tools.Java
         /// <param name="key">The key whose value should be returned.</param>
         /// <param name="defaultValue">The default value if the key is not found.</param>
         /// <returns>The value corresponding to the key - or null if not found.</returns>
-        public string GetProperty(string key, string defaultValue)
+        public string GetProperty(string key, string defaultValue = null)
         {
-            string val = GetProperty(key);
-            return val ?? defaultValue;
+            if (TryGetValue(key, out var value))
+            {
+                return value;
+            }
+
+            if (Defaults != null && Defaults.TryGetValue(key, out value))
+            {
+                return value;
+            }
+
+            return defaultValue;
         }
 
         /// <summary>
@@ -182,7 +134,7 @@ namespace Kajabity.Tools.Java
         /// <returns>The original value of the key - as a string.</returns>
         public string SetProperty(string key, string newValue)
         {
-            string oldValue = GetProperty(key);
+            var oldValue = GetProperty(key);
             this[key] = newValue;
             return oldValue;
         }
@@ -191,7 +143,7 @@ namespace Kajabity.Tools.Java
         /// Returns an enumerator of all the properties available in this instance - including the
         /// defaults.
         /// </summary>
-        /// <returns>An enumarator for all of the keys including defaults.</returns>
+        /// <returns>An enumerator for all of the keys including defaults.</returns>
         public IEnumerator PropertyNames()
         {
             Dictionary<string, string> combined;
@@ -201,7 +153,7 @@ namespace Kajabity.Tools.Java
 
                 for (IEnumerator e = Keys.GetEnumerator(); e.MoveNext();)
                 {
-                    string key = AsString(e.Current);
+                    var key = AsString(e.Current);
                     combined.Add(key, this[key]);
                 }
             }
@@ -218,14 +170,9 @@ namespace Kajabity.Tools.Java
         /// </summary>
         /// <param name="o">An Object or null to be returned as a string.</param>
         /// <returns>string value of the object - or null.</returns>
-        private string AsString(Object o)
+        private static string AsString(object o)
         {
-            if (o == null)
-            {
-                return null;
-            }
-
-            return o.ToString();
+            return o?.ToString();
         }
     }
 }

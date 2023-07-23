@@ -32,49 +32,40 @@ namespace Kajabity.Tools.Java
     /// </summary>
     public class JavaPropertyWriter
     {
-        private const char CHAR_COMMENT_HASH = '#';
-        private const char CHAR_COMMENT_PLING = '!';
+        private const char CharCommentHash = '#';
+        private const char CharCommentPling = '!';
 
-        private const char CHAR_ESCAPE = '\\';
-        private const char CHAR_FORM_FEED = '\f';
-        private const char CHAR_HORIZONTAL_TAB = '\t';
-        private const char CHAR_LINE_FEED = '\n';
-        private const char CHAR_CARRIAGE_RETURN = '\r';
+        private const char CharEscape = '\\';
+        private const char CharFormFeed = '\f';
+        private const char CharHorizontalTab = '\t';
+        private const char CharLineFeed = '\n';
+        private const char CharCarriageReturn = '\r';
 
-        private const char CODE_FORM_FEED = 'f';
-        private const char CODE_HORIZONTAL_TAB = 't';
-        private const char CODE_NEW_LINE = 'n';
-        private const char CODE_CARRIAGE_RETURN = 'r';
-        private const char CODE_UNICODE = 'u';
+        private const char CodeFormFeed = 'f';
+        private const char CodeHorizontalTab = 't';
+        private const char CodeNewLine = 'n';
+        private const char CodeCarriageReturn = 'r';
+        private const char CodeUnicode = 'u';
 
-        private const string TEXT_COMMENT_HASH = "#";
+        private const string TextCommentHash = "#";
 
-        private const string ESCAPED_ESCAPE = "\\\\";
-        private const string ESCAPED_HASH = "\\#";
-        private const string ESCAPED_PLING = "\\!";
-        private const string ESCAPED_FORM_FEED = "\\f";
-        private const string ESCAPED_HORIZONTAL_TAB = "\\t";
-        private const string ESCAPED_LINE_FEED = "\\n";
-        private const string ESCAPED_CARRIAGE_RETURN = "\\r";
-        private const string ESCAPED_UNICODE = "\\u";
-
-        /// <summary>
-        /// Whether or not to output the creation timestamp as a comment at the top of the CSV file.
-        /// </summary>
-        private bool outputTimestamp = true;
+        private const string EscapedEscape = "\\\\";
+        private const string EscapedHash = "\\#";
+        private const string EscapedPling = "\\!";
+        private const string EscapedFormFeed = "\\f";
+        private const string EscapedHorizontalTab = "\\t";
+        private const string EscapedLineFeed = "\\n";
+        private const string EscapedCarriageReturn = "\\r";
+        private const string EscapedUnicode = "\\u";
 
         /// <summary>
         /// Gets or sets a flag indicating if the creation timestamp should be added as a comment at the top of the CSV file - default is true.
         /// </summary>
-        public bool OutputTimestamp
-        {
-            get => outputTimestamp;
-            set => outputTimestamp = value;
-        }
+        public bool OutputTimestamp { get; set; } = true;
 
 
         // Converted to use Dictionary<TKey,TValue> in place of Hashtable when switched to .NET Standard.
-        private Dictionary<string, string> hashtable;
+        private readonly Dictionary<string, string> hashtable;
 
         /// <summary>
         /// Construct an instance of this class.
@@ -87,41 +78,31 @@ namespace Kajabity.Tools.Java
         }
 
         /// <summary>
-        /// Write the properties to the output stream with the default encoding.
-        /// </summary>
-        /// <param name="stream">The output stream where the properties are written.</param>
-        /// <param name="comments">Optional comments that are placed at the beginning of the output.</param>
-        public void Write(Stream stream, string comments)
-        {
-            Write(stream, comments, null);
-        }
-
-        /// <summary>
         /// Write the properties to the output stream.
         /// </summary>
         /// <param name="stream">The output stream where the properties are written.</param>
         /// <param name="comments">Optional comments that are placed at the beginning of the output.</param>
-        /// <param name="encoding">The <see cref="System.Text.Encoding">encoding</see> that is used to write the properies file stream.</param>
-        public void Write(Stream stream, string comments, Encoding encoding)
+        /// <param name="encoding">The <see cref="System.Text.Encoding">encoding</see> that is used to write the properties file stream.</param>
+        public void Write(Stream stream, string comments = null, Encoding encoding = null)
         {
             //  Create a writer to output with the specified encoding.
             var writerEncoding = encoding ?? JavaProperties.DefaultEncoding;
-            StreamWriter writer = new StreamWriter(stream, writerEncoding);
+            var writer = new StreamWriter(stream, writerEncoding);
 
             if (comments != null)
             {
-                writer.WriteLine(CHAR_COMMENT_HASH + " " + comments);
+                writer.WriteLine(CharCommentHash + " " + comments);
             }
 
-            if (outputTimestamp)
+            if (OutputTimestamp)
             {
-                writer.WriteLine(CHAR_COMMENT_HASH + " " + DateTime.Now.ToString());
+                writer.WriteLine(CharCommentHash + " " + DateTime.Now.ToString());
             }
 
             for (IEnumerator e = hashtable.Keys.GetEnumerator(); e.MoveNext();)
             {
-                string key = e.Current.ToString();
-                string val = hashtable[key].ToString();
+                var key = e.Current.ToString();
+                var val = hashtable[key].ToString();
 
                 writer.WriteLine(EscapeText(key, true) + "=" + EscapeText(val, false));
             }
@@ -139,50 +120,49 @@ namespace Kajabity.Tools.Java
         /// <returns></returns>
         private string EscapeText(string s, bool isKey)
         {
-            StringBuilder buf = new StringBuilder();
-            bool first = true;
-            foreach (char c in s)
+            var buf = new StringBuilder();
+            var first = true;
+            foreach (var c in s)
             {
-
                 switch (c)
                 {
                     //  Avoid confusing with a comment if key starts with '!' (33) or '#' (35).
-                    case CHAR_COMMENT_PLING:
-                        buf.Append(ESCAPED_PLING);
+                    case CharCommentPling:
+                        buf.Append(EscapedPling);
                         break;
 
-                    case CHAR_COMMENT_HASH:
-                        buf.Append(ESCAPED_HASH);
+                    case CharCommentHash:
+                        buf.Append(EscapedHash);
                         break;
 
-                    case CHAR_HORIZONTAL_TAB:  //  =09 U+0009  HORIZONTAL TABULATION   \t
-                        buf.Append(ESCAPED_HORIZONTAL_TAB);
+                    case CharHorizontalTab:  //  =09 U+0009  HORIZONTAL TABULATION   \t
+                        buf.Append(EscapedHorizontalTab);
                         break;
 
-                    case CHAR_LINE_FEED:  //  =0A U+000A  LINE FEED               \n
-                        buf.Append(ESCAPED_LINE_FEED);
+                    case CharLineFeed:  //  =0A U+000A  LINE FEED               \n
+                        buf.Append(EscapedLineFeed);
                         break;
 
-                    case CHAR_FORM_FEED:  //  =0C U+000C  FORM FEED               \f
-                        buf.Append(ESCAPED_FORM_FEED);
+                    case CharFormFeed:  //  =0C U+000C  FORM FEED               \f
+                        buf.Append(EscapedFormFeed);
                         break;
 
-                    case CHAR_CARRIAGE_RETURN:  //  =0D U+000D  CARRIAGE RETURN         \r
-                        buf.Append(ESCAPED_CARRIAGE_RETURN);
+                    case CharCarriageReturn:  //  =0D U+000D  CARRIAGE RETURN         \r
+                        buf.Append(EscapedCarriageReturn);
                         break;
 
                     case ' ':   //  32: ' '
                         if (isKey || first)
                         {
-                            buf.Append(CHAR_ESCAPE);
+                            buf.Append(CharEscape);
                         }
                         buf.Append(c);
                         break;
 
                     case ':':   //  58: ':'
                     case '=':   //  61: '='
-                    case CHAR_ESCAPE:  //  92: '\'
-                        buf.Append(CHAR_ESCAPE).Append(c);
+                    case CharEscape:  //  92: '\'
+                        buf.Append(CharEscape).Append(c);
                         break;
 
                     default:
@@ -192,7 +172,7 @@ namespace Kajabity.Tools.Java
                         }
                         else
                         {
-                            buf.Append(ESCAPED_UNICODE);
+                            buf.Append(EscapedUnicode);
                             buf.Append(((int)c).ToString("X4"));
                         }
                         break;
