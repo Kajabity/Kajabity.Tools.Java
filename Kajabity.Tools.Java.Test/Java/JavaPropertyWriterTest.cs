@@ -21,6 +21,7 @@
 using System.IO;
 using System.Text;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace Kajabity.Tools.Java
 {
@@ -95,7 +96,7 @@ namespace Kajabity.Tools.Java
             properties.Store(stream);
 
             var actual = Encoding.GetEncoding("iso-8859-1").GetString(stream.ToArray());
-            Assert.IsEmpty(actual);
+            ClassicAssert.IsEmpty(actual);
         }
 
         [Test]
