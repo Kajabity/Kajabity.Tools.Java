@@ -46,7 +46,7 @@ init:
 
 # Automatically register private account and/or project AppVeyor NuGet feeds.
 nuget:
-    account_feed: true
+    account_feed: false
     project_feed: true
     disable_publish_on_pr: true     # disable publishing of .nupkg artifacts to
                                     # account/project feeds for pull request builds
@@ -94,7 +94,7 @@ deploy:
     # Deploying to NuGet feed - using API Key from NuGet.org.
   - provider: NuGet
     api_key:
-        secure: QWofWYdsyI6kea9misqm/juAxauOznkiITnk5BT8WUaqQPKQwAeW9WpD/zt/5gVP
+        secure: ZoR+8IeDz9PXvLWhZoEtPdLjyv7zXoyejU3XTmGZeFrOsJ3QgfVrisQeEdfC2mYF
     skip_symbols: true
     artifact: /.*\.nupkg/
     on:

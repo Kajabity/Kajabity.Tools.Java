@@ -97,7 +97,7 @@ namespace Kajabity.Tools.Java
                 var properties = new JavaProperties();
                 properties.Load(fileStream);
 
-                ClassicAssert.IsEmpty(properties);
+                Assert.That(properties, Is.Empty);
             }
             catch (Exception ex)
             {
@@ -119,7 +119,7 @@ namespace Kajabity.Tools.Java
                 var properties = new JavaProperties();
                 properties.Load(fileStream);
 
-                ClassicAssert.IsEmpty(properties);
+                Assert.That(properties, Is.Empty);
             }
             catch (Exception ex)
             {
@@ -138,10 +138,10 @@ namespace Kajabity.Tools.Java
                 var properties = new JavaProperties();
                 properties.Load(fileStream);
 
-                ClassicAssert.AreEqual(3, properties.Count);
-                ClassicAssert.AreEqual("value", properties["name"]);
-                ClassicAssert.AreEqual("value", properties["key\nwith\nnewlines"]);
-                ClassicAssert.AreEqual("Value\nwith\nnewlines.", properties["key-no-newlines"]);
+                Assert.That(properties, Has.Count.EqualTo(3));
+                Assert.That(properties["name"], Is.EqualTo("value"));
+                Assert.That(properties["key\nwith\nnewlines"], Is.EqualTo("value"));
+                Assert.That(properties["key-no-newlines"], Is.EqualTo("Value\nwith\nnewlines."));
             }
             catch (Exception ex)
             {
@@ -160,8 +160,8 @@ namespace Kajabity.Tools.Java
                 var properties = new JavaProperties();
                 properties.Load(fileStream);
 
-                ClassicAssert.AreEqual(1, properties.Count);
-                ClassicAssert.AreEqual("c", properties["a"]);
+                Assert.That(properties, Has.Count.EqualTo(1));
+                Assert.That(properties["a"], Is.EqualTo("c"));
             }
             catch (Exception ex)
             {
@@ -180,13 +180,13 @@ namespace Kajabity.Tools.Java
                 var properties = new JavaProperties();
                 properties.Load(fileStream);
 
-                ClassicAssert.AreEqual(5, properties.Count);
-                ClassicAssert.AreEqual("value", properties["key\nwith\nnewlines"]);
-                ClassicAssert.AreEqual("Value\nwith\nnewlines.", properties["key-no-newlines"]);
+                Assert.That(properties, Has.Count.EqualTo(5));
+                Assert.That(properties["key\nwith\nnewlines"], Is.EqualTo("value"));
+                Assert.That(properties["key-no-newlines"], Is.EqualTo("Value\nwith\nnewlines."));
 
-                ClassicAssert.AreEqual("apple, banana, pear, cantaloupe, watermelon, kiwi, mango", properties["fruits"]);
-                ClassicAssert.AreEqual("apple, banana, pear, cantaloupe, watermelon, ", properties["fruits2"]);
-                ClassicAssert.AreEqual("mango", properties["kiwi,"]);
+                Assert.That(properties["fruits"], Is.EqualTo("apple, banana, pear, cantaloupe, watermelon, kiwi, mango"));
+                Assert.That(properties["fruits2"], Is.EqualTo("apple, banana, pear, cantaloupe, watermelon, "));
+                Assert.That(properties["kiwi,"], Is.EqualTo("mango"));
             }
             catch (Exception ex)
             {
@@ -205,19 +205,19 @@ namespace Kajabity.Tools.Java
                 var properties = new JavaProperties();
                 properties.Load(fileStream);
 
-                ClassicAssert.AreEqual(8, properties.Count);
+                Assert.That(properties, Has.Count.EqualTo(8));
 
-                ClassicAssert.AreEqual("b", properties["a"]);
-                ClassicAssert.AreEqual("d", properties["c"]);
+                Assert.That(properties["a"], Is.EqualTo("b"));
+                Assert.That(properties["c"], Is.EqualTo("d"));
 
-                ClassicAssert.AreEqual("f", properties["e"]);
-                ClassicAssert.AreEqual("ij klm", properties["gh"]);
+                Assert.That(properties["e"], Is.EqualTo("f"));
+                Assert.That(properties["gh"], Is.EqualTo("ij klm"));
 
-                ClassicAssert.AreEqual("Beauty 1", properties["Truth1"]);
-                ClassicAssert.AreEqual("Beauty 3", properties["Truth3"]);
-                ClassicAssert.AreEqual("Beauty 2", properties["Truth2"]);
+                Assert.That(properties["Truth1"], Is.EqualTo("Beauty 1"));
+                Assert.That(properties["Truth3"], Is.EqualTo("Beauty 3"));
+                Assert.That(properties["Truth2"], Is.EqualTo("Beauty 2"));
 
-                ClassicAssert.AreEqual(string.Empty, properties["cheeses"]);
+                Assert.That(properties["cheeses"], Is.EqualTo(""));
             }
             catch (Exception ex)
             {
@@ -236,17 +236,17 @@ namespace Kajabity.Tools.Java
                 var properties = new JavaProperties();
                 properties.Load(fileStream);
 
-                ClassicAssert.AreEqual(7, properties.Count);
-                ClassicAssert.AreEqual("value with spaces", properties["key with spaces"]);
+                Assert.That(properties, Has.Count.EqualTo(7));
+                Assert.That(properties["key with spaces"], Is.EqualTo("value with spaces"));
 
-                ClassicAssert.AreEqual("unicode \\u0041='A'", properties["anotherKey"]);
-                ClassicAssert.AreEqual("\u0000\t\n\u001F\u4567Unicode Value", properties["\u0000\u001FUnicode-Key"]);
+                Assert.That(properties["anotherKey"], Is.EqualTo("unicode \\u0041='A'"));
+                Assert.That(properties["\u0000\u001FUnicode-Key"], Is.EqualTo("\u0000\t\n\u001F\u4567Unicode Value"));
 
-                ClassicAssert.AreEqual(" value begins with\tspace.", properties["# key-not-comment"]);
+                Assert.That(properties["# key-not-comment"], Is.EqualTo(" value begins with\tspace."));
 
-                ClassicAssert.AreEqual("Two = Three Four", properties["One"]);
-                ClassicAssert.AreEqual("Seven Eight", properties["Five Six"]);
-                ClassicAssert.AreEqual("Ten ", properties["Nine"]);
+                Assert.That(properties["One"], Is.EqualTo("Two = Three Four"));
+                Assert.That(properties["Five Six"], Is.EqualTo("Seven Eight"));
+                Assert.That(properties["Nine"], Is.EqualTo("Ten "));
             }
             catch (Exception ex)
             {
@@ -287,20 +287,20 @@ namespace Kajabity.Tools.Java
 
                 foreach (var key in utf8PropertiesCorrect.Keys)
                 {
-                    // Assert the correct file is identical to its native2ascii version
-                    ClassicAssert.AreEqual(utf8PropertiesCorrect[key], isoProperties[key]);
+                    // Asert the correct file is identical to its native2ascii version
+                    Assert.That(isoProperties[key], Is.EqualTo(utf8PropertiesCorrect[key]));
 
                     if (key.Equals("AsciiText"))
                     {
                         // Assert that not-using the proper encoding will not corrupt pure ASCII data
-                        ClassicAssert.AreEqual(utf8PropertiesCorrect[key], utf8PropertiesIncorrect[key]);
-                        ClassicAssert.AreEqual(utf8PropertiesCorrect[key], isoProperties[key]);
+                        Assert.That(utf8PropertiesIncorrect[key], Is.EqualTo(utf8PropertiesCorrect[key]));
+                        Assert.That(isoProperties[key], Is.EqualTo(utf8PropertiesCorrect[key]));
                     }
                     else
                     {
                         // Assert that not-using the proper encoding will corrupt data
-                        ClassicAssert.AreNotEqual(utf8PropertiesIncorrect[key], utf8PropertiesCorrect[key]);
-                        ClassicAssert.AreNotEqual(utf8PropertiesIncorrect[key], isoProperties[key]);
+                        Assert.That(utf8PropertiesCorrect[key], Is.Not.EqualTo(utf8PropertiesIncorrect[key]));
+                        Assert.That(isoProperties[key], Is.Not.EqualTo(utf8PropertiesIncorrect[key]));
                     }
 
                 }
@@ -322,11 +322,11 @@ namespace Kajabity.Tools.Java
                 var properties = new JavaProperties();
                 properties.Load(fileStream);
 
-                ClassicAssert.AreEqual(3, properties.Count);
+                Assert.That(properties, Has.Count.EqualTo(3));
 
-                ClassicAssert.AreEqual("my lovely web site.", properties["http://www.kajabity.com"]);
-                ClassicAssert.AreEqual("http://www.kajabity.com", properties["my-blog"]);
-                ClassicAssert.AreEqual("{my-blog}", properties["my-blog-2"]);
+                Assert.That(properties["http://www.kajabity.com"], Is.EqualTo("my lovely web site."));
+                Assert.That(properties["my-blog"], Is.EqualTo("http://www.kajabity.com"));
+                Assert.That(properties["my-blog-2"], Is.EqualTo("{my-blog}"));
             }
             catch (Exception ex)
             {
@@ -346,9 +346,8 @@ namespace Kajabity.Tools.Java
 
                 properties.Load(fileStream, Encoding.UTF8);
 
-                ClassicAssert.AreEqual(
-                    "key",
-                    properties.Keys.Single());
+                Assert.That(
+                    properties.Keys.Single(), Is.EqualTo("key"));
             }
             catch (Exception ex)
             {
@@ -367,7 +366,7 @@ namespace Kajabity.Tools.Java
                 var properties = new JavaProperties();
                 properties.Load(fileStream);
 
-                ClassicAssert.AreEqual("B", properties["AAAP"]);
+                Assert.That(properties["AAAP"], Is.EqualTo("B"));
             }
             catch (Exception ex)
             {
@@ -392,11 +391,11 @@ namespace Kajabity.Tools.Java
                 var properties = new JavaProperties(defaults);
                 properties.Load(fileStream);
 
-                ClassicAssert.IsEmpty(properties);
-                ClassicAssert.IsNull(properties.GetProperty("NonExistent"));
-                ClassicAssert.AreEqual(defaults["test"], properties.GetProperty("test"));
+                Assert.That(properties, Is.Empty);
+                Assert.That(properties.GetProperty("NonExistent"), Is.Null);
+                Assert.That(properties.GetProperty("test"), Is.EqualTo(defaults["test"]));
 
-                ClassicAssert.IsNull(properties.SetProperty("NonExistent", "a new value"));
+                Assert.That(properties.SetProperty("NonExistent", "a new value"), Is.Null);
             }
             catch (Exception ex)
             {
