@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net8.0;netstandard2.0;net462;net47;net471;net472;net48;net481</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net462;net47;net471;net472;net48;net481;net8.0</TargetFrameworks>
     <!-- Assembly info properties -->
     <AssemblyName>Kajabity.Tools.Java</AssemblyName>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
@@ -28,8 +28,6 @@
     <PackageVersion>$(Version)</PackageVersion>
     <RepositoryUrl>https://github.com/Kajabity/Kajabity.Tools.Java</RepositoryUrl>
   </PropertyGroup>
-
-  <Import Project="MultiTargetFrameworkSupport.targets" />
 
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -62,28 +60,4 @@
     <AssemblyOriginatorKeyFile>Kajabity.Tools.Java.snk</AssemblyOriginatorKeyFile>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="System.Text.RegularExpressions">
-      <Version>4.3.1</Version>
-    </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.1'">
-    <PackageReference Include="System.Text.RegularExpressions">
-      <Version>4.3.1</Version>
-    </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.0'">
-    <PackageReference Include="System.Text.RegularExpressions">
-      <Version>4.3.1</Version>
-    </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
-    <PackageReference Include="System.Text.RegularExpressions">
-      <Version>4.3.1</Version>
-    </PackageReference>
-  </ItemGroup>
 </Project>

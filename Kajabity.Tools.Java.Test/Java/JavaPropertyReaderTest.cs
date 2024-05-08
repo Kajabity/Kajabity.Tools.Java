@@ -25,6 +25,7 @@ using System.Reflection;
 using System.Text;
 using System.Linq;
 using System.Collections.Generic;
+using NUnit.Framework.Legacy;
 
 namespace Kajabity.Tools.Java
 {
@@ -57,10 +58,10 @@ namespace Kajabity.Tools.Java
         [OneTimeSetUp]
         public void SetUp()
         {
-            Assembly assem = Assembly.GetExecutingAssembly();
-            string assemblyPath = Directory.GetParent(assem.Location).FullName;
-            string testDataDirectory = Path.Combine(assemblyPath, "Test Data");
-            string outputDirectory = Path.Combine(assemblyPath, "Output");
+            var assem = Assembly.GetExecutingAssembly();
+            var assemblyPath = Directory.GetParent(assem.Location).FullName;
+            var testDataDirectory = Path.Combine(assemblyPath, "Test Data");
+            var outputDirectory = Path.Combine(assemblyPath, "Output");
 
             JavaTestDataDirectory = Path.Combine(testDataDirectory, "Java");
             JavaOutputDirectory = Path.Combine(outputDirectory, "Java");
@@ -88,15 +89,13 @@ namespace Kajabity.Tools.Java
         [Test]
         public void TestEmptyFile()
         {
-            FileStream fileStream = null;
             try
             {
                 Console.WriteLine("Loading " + EmptyTestFile);
 
-                fileStream = new FileStream(EmptyTestFile, FileMode.Open);
-                JavaProperties properties = [];
+                using var fileStream = new FileStream(EmptyTestFile, FileMode.Open);
+                var properties = new JavaProperties();
                 properties.Load(fileStream);
-                fileStream.Close();
 
                 Assert.That(properties, Is.Empty);
             }
@@ -116,15 +115,13 @@ namespace Kajabity.Tools.Java
         [Test]
         public void TestBlankFile()
         {
-            FileStream fileStream = null;
             try
             {
                 Console.WriteLine("Loading " + BlankTestFile);
 
-                fileStream = new FileStream(BlankTestFile, FileMode.Open);
-                JavaProperties properties = [];
+                using var fileStream = new FileStream(BlankTestFile, FileMode.Open);
+                var properties = new JavaProperties();
                 properties.Load(fileStream);
-                fileStream.Close();
 
                 Assert.That(properties, Is.Empty);
             }
@@ -132,24 +129,18 @@ namespace Kajabity.Tools.Java
             {
                 Assert.Fail(ex.Message);
             }
-            finally
-            {
-                fileStream?.Close();
-            }
         }
 
         [Test]
         public void TestComments()
         {
-            FileStream fileStream = null;
             try
             {
                 Console.WriteLine("Loading " + CommentsTestFile);
 
-                fileStream = new FileStream(CommentsTestFile, FileMode.Open);
-                JavaProperties properties = [];
+                using var fileStream = new FileStream(CommentsTestFile, FileMode.Open);
+                var properties = new JavaProperties();
                 properties.Load(fileStream);
-                fileStream.Close();
 
                 Assert.That(properties, Has.Count.EqualTo(3));
                 Assert.That(properties["name"], Is.EqualTo("value"));
@@ -160,24 +151,18 @@ namespace Kajabity.Tools.Java
             {
                 Assert.Fail(ex.Message);
             }
-            finally
-            {
-                fileStream?.Close();
-            }
         }
 
         [Test]
         public void TestDuplicates()
         {
-            FileStream fileStream = null;
             try
             {
                 Console.WriteLine("Loading " + DuplicateTestFile);
 
-                fileStream = new FileStream(DuplicateTestFile, FileMode.Open);
-                JavaProperties properties = [];
+                var fileStream = new FileStream(DuplicateTestFile, FileMode.Open);
+                var properties = new JavaProperties();
                 properties.Load(fileStream);
-                fileStream.Close();
 
                 Assert.That(properties, Has.Count.EqualTo(1));
                 Assert.That(properties["a"], Is.EqualTo("c"));
@@ -186,24 +171,18 @@ namespace Kajabity.Tools.Java
             {
                 Assert.Fail(ex.Message);
             }
-            finally
-            {
-                fileStream?.Close();
-            }
         }
 
         [Test]
         public void TestLineBreaks()
         {
-            FileStream fileStream = null;
             try
             {
                 Console.WriteLine("Loading " + LineBreaksTestFile);
 
-                fileStream = new FileStream(LineBreaksTestFile, FileMode.Open);
-                JavaProperties properties = [];
+                using var fileStream = new FileStream(LineBreaksTestFile, FileMode.Open);
+                var properties = new JavaProperties();
                 properties.Load(fileStream);
-                fileStream.Close();
 
                 Assert.That(properties, Has.Count.EqualTo(5));
                 Assert.That(properties["key\nwith\nnewlines"], Is.EqualTo("value"));
@@ -217,24 +196,18 @@ namespace Kajabity.Tools.Java
             {
                 Assert.Fail(ex.Message);
             }
-            finally
-            {
-                fileStream?.Close();
-            }
         }
 
         [Test]
         public void TestSeparators()
         {
-            FileStream fileStream = null;
             try
             {
                 Console.WriteLine("Loading " + SeparatorsTestFile);
 
-                fileStream = new FileStream(SeparatorsTestFile, FileMode.Open);
-                JavaProperties properties = [];
+                using var fileStream = new FileStream(SeparatorsTestFile, FileMode.Open);
+                var properties = new JavaProperties();
                 properties.Load(fileStream);
-                fileStream.Close();
 
                 Assert.That(properties, Has.Count.EqualTo(8));
 
@@ -254,24 +227,18 @@ namespace Kajabity.Tools.Java
             {
                 Assert.Fail(ex.Message);
             }
-            finally
-            {
-                fileStream?.Close();
-            }
         }
 
         [Test]
         public void TestSpecialCharacters()
         {
-            FileStream fileStream = null;
             try
             {
                 Console.WriteLine("Loading " + SpecialCharactersTestFile);
 
-                fileStream = new FileStream(SpecialCharactersTestFile, FileMode.Open);
-                JavaProperties properties = [];
+                using var fileStream = new FileStream(SpecialCharactersTestFile, FileMode.Open);
+                var properties = new JavaProperties();
                 properties.Load(fileStream);
-                fileStream.Close();
 
                 Assert.That(properties, Has.Count.EqualTo(7));
                 Assert.That(properties["key with spaces"], Is.EqualTo("value with spaces"));
@@ -289,43 +256,37 @@ namespace Kajabity.Tools.Java
             {
                 Assert.Fail(ex.Message);
             }
-            finally
-            {
-                fileStream?.Close();
-            }
         }
 
         [Test]
         public void TestUtf8NonAsciiSymbols()
         {
-            FileStream utf8FileStream = null;
-            FileStream isoFileStream = null;
             try
             {
                 Console.WriteLine("Loading " + NonAsciiSymbolsUtf8TestFile);
 
                 // A file containing non-ASCII characters, which is saved using the utf8 encoding
-                utf8FileStream = new FileStream(NonAsciiSymbolsUtf8TestFile, FileMode.Open);
+                using var utf8FileStream = new FileStream(NonAsciiSymbolsUtf8TestFile, FileMode.Open);
 
                 Console.WriteLine("Loading " + NonAsciiSymbolsNativeToAsciiTestFile);
 
                 // A file with the same data as above, but processed with the native2ascii tool from jdk 1.8, and stored in ISO-8859-1. This will work correctly.
-                isoFileStream = new FileStream(NonAsciiSymbolsNativeToAsciiTestFile, FileMode.Open);
+                using var isoFileStream = new FileStream(NonAsciiSymbolsNativeToAsciiTestFile, FileMode.Open);
 
                 // Java properties read from the utf8 file with correct encoding provided
-                JavaProperties utf8PropertiesCorrect = [];
+                var utf8PropertiesCorrect = new JavaProperties();
 
                 // we explicitly specify the encoding, so that UTF8 characters are read using the UTF8 encoding and the data will be correct
                 utf8PropertiesCorrect.Load(utf8FileStream, Encoding.UTF8);
 
-                JavaProperties utf8PropertiesIncorrect = [];
+                var utf8PropertiesIncorrect = new JavaProperties();
                 utf8FileStream.Seek(0, SeekOrigin.Begin);// reset the stream position from the previous loading.
                 // we do not set the encoding, so the data will not appear correctly - UTF8 characters will be read usign the default ISO-8859-1 encoding
                 // this is to ensure that setting the encoding makes a difference
                 utf8PropertiesIncorrect.Load(utf8FileStream);
 
 
-                JavaProperties isoProperties = [];
+                var isoProperties = new JavaProperties();
                 isoProperties.Load(isoFileStream);
 
                 foreach (var key in utf8PropertiesCorrect.Keys)
@@ -347,33 +308,23 @@ namespace Kajabity.Tools.Java
                     }
 
                 }
-                isoFileStream.Close();
-
-                //Assert.IsEmpty(properties);
             }
             catch (Exception ex)
             {
                 Assert.Fail(ex.Message);
-            }
-            finally
-            {
-                utf8FileStream?.Close();
-                isoFileStream?.Close();
             }
         }
 
         [Test]
         public void TestUrls()
         {
-            FileStream fileStream = null;
             try
             {
                 Console.WriteLine("Loading " + UrlsTestFile);
 
-                fileStream = new FileStream(UrlsTestFile, FileMode.Open);
-                JavaProperties properties = [];
+                using var fileStream = new FileStream(UrlsTestFile, FileMode.Open);
+                var properties = new JavaProperties();
                 properties.Load(fileStream);
-                fileStream.Close();
 
                 Assert.That(properties, Has.Count.EqualTo(3));
 
@@ -385,22 +336,17 @@ namespace Kajabity.Tools.Java
             {
                 Assert.Fail(ex.Message);
             }
-            finally
-            {
-                fileStream?.Close();
-            }
         }
 
         [Test]
         public void TestUtf8WithBom()
         {
-            FileStream fileStream = null;
             try
             {
                 Console.WriteLine("Loading " + Utf8WithBomFile);
 
-                fileStream = new FileStream(Utf8WithBomFile, FileMode.Open);
-                JavaProperties properties = [];
+                using var fileStream = new FileStream(Utf8WithBomFile, FileMode.Open);
+                var properties = new JavaProperties();
 
                 properties.Load(fileStream, Encoding.UTF8);
 
@@ -411,22 +357,17 @@ namespace Kajabity.Tools.Java
             {
                 Assert.Fail(ex.Message);
             }
-            finally
-            {
-                fileStream?.Close();
-            }
         }
 
         [Test]
         public void TestLineBreakInUnicodeSequence()
         {
-            FileStream fileStream = null;
             try
             {
                 // Read the test properties file.
                 Console.WriteLine("Loading " + LineBreakWithUnicodeFile);
-                fileStream = new FileStream(LineBreakWithUnicodeFile, FileMode.Open);
-                JavaProperties properties = [];
+                using var fileStream = new FileStream(LineBreakWithUnicodeFile, FileMode.Open);
+                var properties = new JavaProperties();
                 properties.Load(fileStream);
 
                 Assert.That(properties["AAAP"], Is.EqualTo("B"));
@@ -435,17 +376,12 @@ namespace Kajabity.Tools.Java
             {
                 Assert.Fail(ex.Message);
             }
-            finally
-            {
-                fileStream?.Close();
-            }
         }
 
 
         [Test]
         public void TestMissingProperty()
         {
-            FileStream fileStream = null;
             try
             {
                 Console.WriteLine("Loading " + EmptyTestFile);
@@ -455,10 +391,9 @@ namespace Kajabity.Tools.Java
                     { "test", "value" }
                 };
 
-                fileStream = new FileStream(EmptyTestFile, FileMode.Open);
-                JavaProperties properties = new(defaults);
+                using var fileStream = new FileStream(EmptyTestFile, FileMode.Open);
+                var properties = new JavaProperties(defaults);
                 properties.Load(fileStream);
-                fileStream.Close();
 
                 Assert.That(properties, Is.Empty);
                 Assert.That(properties.GetProperty("NonExistent"), Is.Null);
@@ -469,10 +404,6 @@ namespace Kajabity.Tools.Java
             catch (Exception ex)
             {
                 Assert.Fail(ex.Message);
-            }
-            finally
-            {
-                fileStream?.Close();
             }
         }
     }

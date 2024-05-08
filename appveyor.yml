@@ -23,7 +23,7 @@
 #---------------------------------# 
 
 # tell appveyor to use MSBuild 15.0 or higher
-image: Visual Studio 2019
+image: Visual Studio 2022
  
 # version format 
 version: 0.3-{build}
@@ -106,7 +106,7 @@ deploy:
     release: kajabity.tools.csv-v$(appveyor_build_version)
     description: 'Kajabity.Tools.Java Release v$(appveyor_build_version)'
     auth_token:
-        secure: c7cNIShFSFMjEh0bQDEHNdKOGQ67Us4Eobec0A/W4ZieZHkBhGRfj2VOCwPUMHQP
+        secure: JcFMulBQj5uHDMqqyRApmJbzVa5hj5US8+hZ85ybBgAxLTYhGLxSTckqokhDybA+
     draft: false
     prerelease: false
     #appveyor_repo_tag: true        # deploy on tag push only
