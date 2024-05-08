@@ -46,7 +46,7 @@ init:
 
 # Automatically register private account and/or project AppVeyor NuGet feeds.
 nuget:
-    account_feed: true
+    account_feed: false
     project_feed: true
     disable_publish_on_pr: true     # disable publishing of .nupkg artifacts to
                                     # account/project feeds for pull request builds
