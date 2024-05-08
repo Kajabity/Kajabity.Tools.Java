@@ -103,10 +103,6 @@ namespace Kajabity.Tools.Java
             {
                 Assert.Fail(ex.Message);
             }
-            finally
-            {
-                fileStream?.Close();
-            }
         }
 
         /// <summary>
