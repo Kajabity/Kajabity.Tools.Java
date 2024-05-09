@@ -1,7 +1,7 @@
 Kajabity.Tools.Java GitHub Repository
 ====================================
 
-[![Build status](https://ci.appveyor.com/api/projects/status/98ovyr22uy57gkp3/branch/master?svg=true)](https://ci.appveyor.com/project/Kajabity/kajabity-tools-java/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/98ovyr22uy57gkp3/branch/main?svg=true)](https://ci.appveyor.com/project/Kajabity/kajabity-tools-java/branch/main)
 
 Kajabity.Tools.Java is a collection of utility classes to read and write Java style “.properties” files in .NET applications.
 

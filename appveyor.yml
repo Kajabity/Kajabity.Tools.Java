@@ -99,7 +99,7 @@ deploy:
     artifact: /.*\.nupkg/
     on:
         #appveyor_repo_tag: true        # deploy on tag push only - removed or won't deploy at all.
-        branch: master                 # release from master branch only
+        branch: main                    # release from main branch only
 
     # Deploy to GitHub Releases 
   - provider: GitHub 
