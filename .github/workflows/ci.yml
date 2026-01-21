@@ -1,0 +1,37 @@
+  # .github/workflows/ci.yml
+  name: CI
+
+  on:
+    push:
+      branches: [ "**" ]   # run on any branch push
+      tags: [ "v*" ]        # also run when a version tag is pushed
+    pull_request:
+      branches: [ "**" ]    # run on any branch PR
+
+  permissions:
+    contents: read
+
+  jobs:
+    build:
+      name: Build & Test
+      runs-on: ubuntu-latest
+
+      steps:
+        - uses: actions/checkout@v5
+
+        - name: Setup .NET
+          uses: actions/setup-dotnet@v5
+          with:
+            dotnet-version: 9.0
+
+        - name: Restore dependencies
+          run: dotnet restore
+
+        - name: Build
+          run: dotnet build --configuration Release --no-restore
+
+        - name: Run tests
+          run: dotnet test --no-build --configuration Release --verbosity normal
+
+        - name: Check vulnerable packages
+          run: dotnet list package --vulnerable --include-transitive

@@ -2,13 +2,14 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net47;net471;net472;net48;net481;net10.0</TargetFrameworks>
+
     <!-- Assembly info properties -->
     <AssemblyName>Kajabity.Tools.Java</AssemblyName>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <AssemblyProduct>$(AssemblyTitle)</AssemblyProduct>
-    <AssemblyCompany>Williams Technologies Limited</AssemblyCompany>
-    <Copyright>Copyright © 2009-21 $(AssemblyCompany).</Copyright>
-    <Authors>$(AssemblyCompany)</Authors>
+    <AssemblyCompany>Kajabity</AssemblyCompany>
+    <Copyright>Copyright © 2009-2026 $(AssemblyCompany).</Copyright>
+    <Authors>Simon J. Williams</Authors>
     <Description>Classes to read and write Java style “.properties” files in .NET applications.</Description>
 
     <!-- Versioning properties -->
