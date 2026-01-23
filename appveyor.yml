@@ -23,6 +23,7 @@
 #---------------------------------# 
 
 # tell appveyor to use MSBuild 15.0 or higher
+# eventually move to Visual Studio 2026 when available
 image: Visual Studio 2022
  
 # version format 
@@ -103,7 +104,7 @@ deploy:
 
     # Deploy to GitHub Releases 
   - provider: GitHub 
-    release: kajabity.tools.csv-v$(appveyor_build_version)
+    release: kajabity.tools.java-v$(appveyor_build_version)
     description: 'Kajabity.Tools.Java Release v$(appveyor_build_version)'
     auth_token:
         secure: VRw5uPJq7zs0KwEF2hR8c9aSn5ZzA/SzJq4wNCR7fdYwMRrbwg+9sZDkAD30fsOY
