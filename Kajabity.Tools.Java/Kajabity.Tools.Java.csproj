@@ -4,57 +4,32 @@
     <TargetFrameworks>netstandard2.0;net47;net471;net472;net48;net481;net10.0</TargetFrameworks>
 
     <!-- Assembly info properties -->
-    <AssemblyName>Kajabity.Tools.Java</AssemblyName>
-    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <AssemblyProduct>$(AssemblyTitle)</AssemblyProduct>
-    <AssemblyCompany>Kajabity</AssemblyCompany>
+    <Company>Kajabity</Company>
     <Copyright>Copyright © 2009-2026 $(AssemblyCompany).</Copyright>
     <Authors>Simon J. Williams</Authors>
     <Description>Classes to read and write Java style “.properties” files in .NET applications.</Description>
 
-    <!-- Versioning properties -->
-    <Build>$([System.DateTime]::op_Subtraction($([System.DateTime]::get_Now().get_Date()),$([System.DateTime]::new(2000,1,1))).get_TotalDays())</Build>
-    <Revision>$([MSBuild]::Divide($([System.DateTime]::get_Now().get_TimeOfDay().get_TotalSeconds()), 2).ToString('F0'))</Revision>
-    <Version>0.3.$(Build).$(Revision)</Version>
-    <AssemblyVersion>$(Version)</AssemblyVersion>
-    <AssemblyFileVersion>$(Version)</AssemblyFileVersion>
-    <AssemblyInformationalVersion>$(Version)</AssemblyInformationalVersion>
-
     <!-- nuget package properties -->
-    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageProjectUrl>http://kajabity.com/kajabity-tools/java-properties-classes/</PackageProjectUrl>
-    <PackageIconUri>http://kajabity.com/images/logo-57x57.png</PackageIconUri>
-    <PackageIconUrl>$(PackageIconUri)</PackageIconUrl><!-- This will be deprecated in favour of the above tag -->
+    <PackageIcon>kajabity.tools.java.logo.png</PackageIcon>
     <PackageTags>Java Properties</PackageTags>
-    <PackageVersion>$(Version)</PackageVersion>
     <RepositoryUrl>https://github.com/Kajabity/Kajabity.Tools.Java</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <!-- <GenerateAssemblyInfo>false</GenerateAssemblyInfo> -->
-    <Deterministic>false</Deterministic>
-    <ProjectGuid>{4CF13660-95BA-482C-BA3E-BF97B9624F19}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Kajabity.Tools</RootNamespace>
-    <DefaultLanguage>en-US</DefaultLanguage>
-    <DocumentationFile></DocumentationFile>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <DefineConstants>DEBUG;TRACE;$(FrameworkSymbols)</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <DefineConstants>TRACE;$(FrameworkSymbols)</DefineConstants>
-  </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\LICENSE.txt" Pack="true" PackagePath="\" />
+    <None Include="..\kajabity.tools.java.logo.png" Pack="true" PackagePath="\" />
+    <None Include="..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>

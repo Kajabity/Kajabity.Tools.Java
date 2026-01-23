@@ -67,7 +67,7 @@ namespace Kajabity.Tools.Java
         }
 
         /// <summary>
-        /// Load Java Properties from a stream with the specified encoding and 
+        /// Load Java Properties from a stream with the specified encoding and
         /// expecting the format as described in <see cref="JavaPropertyReader"/>.
         /// </summary>
         /// <param name="streamIn">An input stream to read properties from.</param>
