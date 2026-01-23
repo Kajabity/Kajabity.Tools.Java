@@ -11,43 +11,50 @@ Kajabity.Tools.Java - Java Properties Utilities
 Overview
 --------
 
-Kajabity.Tools.Java is a collection of utility classes to read and write Java style “.properties”
-files in .NET applications.
+Kajabity.Tools.Java is a collection of utility classes for reading and writing Java-style 
+`.properties` files in .NET applications.
 
 This repository contains several sub-projects:
 
-- **Kajabity.Tools.Java** - a DLL project providing the JavaProperties classes for .NET projects.
-- **Kajabity.Tools.Java.Test** - NUnit tests for the Kajabity.Tools.Java classes.
+- Kajabity.Tools.Java – a DLL project providing the JavaProperties classes for .NET projects.
 
-See the Releases section on GitHub to download copies of code, DLL exe's and NuGets.
+- Kajabity.Tools.Java.Test – NUnit tests for the Kajabity.Tools.Java classes.
 
-Kajabity.Tools.Java DLL is a strongly named assembly and is available from nuget.org as
-Kajabity.Tools.Java.
+See the Releases section on GitHub to download source code, DLLs, executables, and NuGet packages.
+
+The Kajabity.Tools.Java DLL is a strongly named assembly and is available from nuget.org as Kajabity.Tools.Java.
 
 Features
 --------
 
-The JavaProperties class wraps a Dictionary<string, string> class to provide the following additional features:
+The JavaProperties class wraps a `Dictionary<string, string>` to provide the following additional features:
 
-- Load Java properties from a Stream into the Dictionary<string, string>
-- Load Java properties from a Stream with an alternate (e.g. Unicode) encoding – easier to support languages in alternate character sets.
-- Store Java properties to a Stream from the Dictionary<string, string>.
-- Support default properties (as with Java Properties class) using the 2nd constructor which provides a Dictionary<string, string> of defaults.
-- Coerce the property keys and values to strings (as they are for Java properties).
+- Load Java properties from a Stream into a `Dictionary<string, string>`.
+
+- Load Java properties from a Stream using an alternate encoding (e.g. Unicode), making it easier to 
+  support languages with non-ASCII character sets.
+
+- Store Java properties from a `Dictionary<string, string>` to a Stream.
+
+- Support default properties (as with the Java Properties class) using the second constructor, which 
+accepts a `Dictionary<string, string>` of defaults.
+
+- Coerce property keys and values to strings, matching Java properties behaviour.
 
 Usage
 -----
 
-Full documentation is available at [https://www.kajabity.com/kajabity-tools/java-properties-classes/](https://www.kajabity.com/kajabity-tools/java-properties-classes/).
+Full documentation is available at:
+https://www.kajabity.com/kajabity-tools/java-properties-classes/
 
 Releases
 --------
 
-- **Latest GitHub Release:** [View on GitHub](https://github.com/kajabity/Kajabity.Tools.Java/releases/latest)
-- **Latest NuGet Package:** [View on NuGet.org](https://www.nuget.org/packages/Kajabity.Tools.Java/)
+Latest GitHub Release: View on GitHub
+
+Latest NuGet Package: View on NuGet.org
 
 Feedback & Contributions
--------------------------
+------------------------
 
 Contributions and feedback are welcome if you notice anything that could be improved.
-

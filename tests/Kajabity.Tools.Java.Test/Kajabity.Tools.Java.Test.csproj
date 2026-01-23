@@ -32,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Kajabity.Tools.Java\Kajabity.Tools.Java.csproj" />
+    <ProjectReference Include="..\..\src\Kajabity.Tools.Java\Kajabity.Tools.Java.csproj" />
   </ItemGroup>
 
   <ItemGroup>
