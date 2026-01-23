@@ -1,18 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31515.178
+# Visual Studio Version 18
+VisualStudioVersion = 18.2.11408.102 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C4DC639F-FAF7-451B-856A-7133B434F10C}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
-		appveyor.yml = appveyor.yml
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kajabity.Tools.Java", "Kajabity.Tools.Java\Kajabity.Tools.Java.csproj", "{4CF13660-95BA-482C-BA3E-BF97B9624F19}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kajabity.Tools.Java", "src\Kajabity.Tools.Java\Kajabity.Tools.Java.csproj", "{4CF13660-95BA-482C-BA3E-BF97B9624F19}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kajabity.Tools.Java.Test", "Kajabity.Tools.Java.Test\Kajabity.Tools.Java.Test.csproj", "{F182CD46-5B4C-4EDF-A3EE-AEE11FB2A1BE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kajabity.Tools.Java.Test", "tests\Kajabity.Tools.Java.Test\Kajabity.Tools.Java.Test.csproj", "{F182CD46-5B4C-4EDF-A3EE-AEE11FB2A1BE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

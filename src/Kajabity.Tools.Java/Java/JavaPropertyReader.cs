@@ -25,7 +25,7 @@ using System.Text;
 namespace Kajabity.Tools.Java
 {
     /// <summary>
-    /// This class reads Java style properties from an input stream.  
+    /// This class reads Java style properties from an input stream.
     /// </summary>
     public class JavaPropertyReader
     {
@@ -152,29 +152,29 @@ namespace Kajabity.Tools.Java
         {
             this.hashtable = hashtable;
         }
-        
+
         /// <summary>
-        /// <para>Load key value pairs (properties) from an input Stream.  
-        /// The input stream (usually reading from a ".properties" file) consists of a series of lines (terminated 
+        /// <para>Load key value pairs (properties) from an input Stream.
+        /// The input stream (usually reading from a ".properties" file) consists of a series of lines (terminated
         /// by \r, \n or \r\n) each a key value pair, a comment or a blank line.</para>
-        /// 
-        /// <para>Leading whitespace (spaces, tabs, formfeeds) are ignored at the start of any line - and a line that is empty or 
+        ///
+        /// <para>Leading whitespace (spaces, tabs, formfeeds) are ignored at the start of any line - and a line that is empty or
         /// contains only whitespace is blank and ignored.</para>
-        /// 
-        /// <para>A line with the first non-whitespace character is a '#' or '!' is a comment line and the rest of the line is 
+        ///
+        /// <para>A line with the first non-whitespace character is a '#' or '!' is a comment line and the rest of the line is
         /// ignored.</para>
-        /// 
+        ///
         /// <para>If the first non-whitespace character is not '#' or '!' then it is the start of a key.  A key is all the
         /// characters up to the first whitespace or a key/value separator - '=' or ':'.</para>
-        /// 
+        ///
         /// <para>The separator is optional.  Any whitespace after the key or after the separator (if present) is ignored.</para>
-        /// 
-        /// <para>The first non-whitespace character after the separator (or after the key if no separator) begins the value.  
+        ///
+        /// <para>The first non-whitespace character after the separator (or after the key if no separator) begins the value.
         /// The value may include whitespace, separators, or comment characters.</para>
-        /// 
-        /// <para>Any unicode character may be included in either key or value by using escapes preceded by the escape 
+        ///
+        /// <para>Any unicode character may be included in either key or value by using escapes preceded by the escape
         /// character '\'.</para>
-        /// 
+        ///
         /// <para>The following special cases are defined:</para>
         /// <code>
         /// 	'\t' - horizontal tab.
@@ -182,20 +182,20 @@ namespace Kajabity.Tools.Java
         /// 	'\r' - return
         /// 	'\n' - new line
         /// 	'\\' - add escape character.
-        /// 
+        ///
         /// 	'\ ' - add space in a key or at the start of a value.
         /// 	'\!', '\#' - add comment markers at the start of a key.
         /// 	'\=', '\:' - add a separator in a key.
         /// </code>
-        /// 
+        ///
         /// <para>Any unicode character using the following escape:</para>
         /// <code>
         /// 	'\uXXXX' - where XXXX represents the unicode character code as 4 hexadecimal digits.
         /// </code>
-        /// 
+        ///
         /// <para>Finally, longer lines can be broken by putting an escape at the very end of the line.  Any leading space
         /// (unless escaped) is skipped at the beginning of the following line.</para>
-        /// 
+        ///
         /// Examples
         /// <code>
         /// 	a-key = a-value
@@ -203,24 +203,24 @@ namespace Kajabity.Tools.Java
         /// 	a-key=a-value
         /// 	a-key a-value
         /// </code>
-        /// 
+        ///
         /// <para>All the above will result in the same key/value pair - key "a-key" and value "a-value".</para>
         /// <code>
         /// 	! comment...
         /// 	# another comment...
         /// </code>
-        /// 
+        ///
         /// <para>The above are two examples of comments.</para>
         /// <code>
         /// 	Honk\ Kong = Near China
         /// </code>
-        /// 
+        ///
         /// <para>The above shows how to embed a space in a key - key is "Hong Kong", value is "Near China".</para>
         /// <code>
         /// 	a-longer-key-example = a really long value that is \
         /// 			split over two lines.
         /// </code>
-        /// 
+        ///
         /// <para>An example of a long line split into two.</para>
         /// </summary>
         /// <param name="stream">The input stream that the properties are read from.</param>

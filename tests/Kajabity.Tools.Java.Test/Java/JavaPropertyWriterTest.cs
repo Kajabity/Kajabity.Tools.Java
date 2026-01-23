@@ -27,7 +27,7 @@ namespace Kajabity.Tools.Java
 {
     /// <summary>
     /// The following tests are validated by converting to equivalent JUnit tests - for example:
-    /// 
+    ///
     /// <pre>
     ///    @Test
     ///    public void test() throws IOException

@@ -27,7 +27,7 @@ namespace Kajabity.Tools.Java
     {
         /// <summary>
         /// Overwrite the key with a new value.
-        /// 
+        ///
         /// Last one wins.
         /// </summary>
         Overwrite = 1,
