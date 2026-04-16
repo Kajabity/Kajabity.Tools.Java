@@ -4,7 +4,6 @@
   on:
     push:
       branches: [ "**" ]   # run on any branch push
-      tags: [ "v*" ]        # also run when a version tag is pushed
     pull_request:
       branches: [ "**" ]    # run on any branch PR
 

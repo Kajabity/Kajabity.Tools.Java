@@ -50,9 +50,9 @@ https://www.kajabity.com/kajabity-tools/java-properties-classes/
 Releases
 --------
 
-Latest GitHub Release: View on GitHub
+Latest GitHub Release: View on [GitHub](https://github.com/Kajabity/Kajabity.Tools.Java/releases).
 
-Latest NuGet Package: View on NuGet.org
+Latest NuGet Package: View on [NuGet.org](https://www.nuget.org/packages/Kajabity.Tools.Java/).
 
 Feedback & Contributions
 ------------------------
